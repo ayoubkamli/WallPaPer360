@@ -111,7 +111,7 @@ public class MainActivity extends MenuFragmentActivity {
         slidingMenu.setMode(SlidingMenu.LEFT);
         //SlidingMenu划出时主页面显示的剩余宽度
         slidingMenu.setShadowWidthRes(R.dimen.height_alert_title);
-        slidingMenu.setBehindOffsetRes(R.dimen.height_alert_title);
+        slidingMenu.setBehindOffsetRes(R.dimen.header_logo_size);
         //设置滑动的区域
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         //使SlidingMenu附加在Activity上
@@ -139,7 +139,9 @@ public class MainActivity extends MenuFragmentActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - mkeyTime) > 2000) {
                 mkeyTime = System.currentTimeMillis();
-                slidingMenu.toggle();
+                if(slidingMenu.isMenuShowing()){
+                    slidingMenu.showContent();
+                }
                 showToast("再按一次退出程序");
             } else {
                 finish();
