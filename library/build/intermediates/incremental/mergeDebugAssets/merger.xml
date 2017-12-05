@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="H:\AndroidStudioWorkSpace\WallPaPer360\library\assets"/><source path="H:\AndroidStudioWorkSpace\WallPaPer360\library\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="H:\AndroidStudioWorkSpace\WallPaPer360\library\src\debug\assets"/></dataSet></merger>

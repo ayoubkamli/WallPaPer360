@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="line_color">#efefef</color>
+    <color name="system_bar_color">#3F51B5</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="red">#FE5C47</color>
+    <color name="blue">#167EFB</color>
+    <!-- 覆盖颜色 -->
+    <color name="bgColor_overlay_black">#95000000</color>
+    <!-- 窗口背景颜色 -->
+    <color name="bgColor_svprogressdefaultview">@android:color/white</color>
+    <!-- 标题颜色 -->
+    <color name="textColor_svprogresshuddefault_msg">#000000</color>
+    <color name="roundColor_svprogresshuddefault">#e5e5e5</color>
+    <color name="roundProgressColor_svprogresshuddefault">@android:color/black</color>
+    <!-- 覆盖颜色 -->
+    <color name="bgColor_overlay">#60000000</color>
+    <!-- 窗口背景颜色 -->
+    <color name="bgColor_alertview_alert">#f8f8f8</color>
+    <!-- 标题颜色 -->
+    <color name="textColor_alert_title">#000000</color>
+    <color name="textColor_actionsheet_title">#8f8f8f</color>
+    <!-- 消息颜色 -->
+    <color name="textColor_alert_msg">#000000</color>
+    <color name="textColor_actionsheet_msg">#8f8f8f</color>
+    <!-- 线条颜色 -->
+    <color name="bgColor_divier">#d7d7db</color>
+
+
+</resources>

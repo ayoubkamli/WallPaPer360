@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@mipmap/splash" >
+
+    <com.jeremyfeinstein.slidingmenu.lib.SlidingMenu
+        xmlns:sliding="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/slideMenu"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        sliding:fadeEnabled="true"
+        sliding:behindScrollScale="0.5"
+        sliding:shadowWidth="30dp"
+        >
+        <!--<include layout="@layout/layout_menu"/>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <include layout="@layout/layout_main"/>
+            </LinearLayout>
+
+    </com.jeremyfeinstein.slidingmenu.lib.SlidingMenu>
+
+</RelativeLayout>
