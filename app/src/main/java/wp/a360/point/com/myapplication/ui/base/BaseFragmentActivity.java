@@ -79,13 +79,14 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements V
      * @param flResId
      * @param fragment
      */
+    FragmentTransaction ft;
     protected void switchFragment(int flResId, Fragment fragment) {
         try {
             if ((flResId == 0) || (this.fm == null) || (fragment == null)) {
                 return;
             }
             if ((fragment != null) && (this.mFragment != fragment)) {
-                FragmentTransaction ft = this.fm.beginTransaction();
+                ft = this.fm.beginTransaction();
                 if (this.mFragment == null)
                     ft.add(flResId, fragment).commit();
                 else if (!fragment.isAdded())

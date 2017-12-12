@@ -1,6 +1,7 @@
 package wp.a360.point.com.myapplication.ui.utils;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.ArrayMap;
 
 import java.io.File;
@@ -67,16 +68,21 @@ public class OkHttpUtils {
                         .cacheControl(CacheControl.FORCE_CACHE)
                         .build();
             }
+
             Response response = chain.proceed(request);
-            if (NetworkUtils.getAPNType(context)>0) {//有网络，缓存半小时
+            if (NetworkUtils.getAPNType(context)>0) { //有网络，缓存半小时
                 int maxAge = 60*1; // read from cache for 1 minute
                 response.newBuilder()
+                        //.addHeader("Connection", "close")
+
                         .removeHeader("Pragma")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
                         .header("Cache-Control", "public, max-age=" + maxAge)
                         .build();
+
             } else {//无网络，缓存1小时
                 int maxStale = 60*60;//tolerate 4-weeks stale
                 response.newBuilder()
+                        //.addHeader("Connection", "close")
                         .removeHeader("Pragma")
                         .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
                         .build();
@@ -116,6 +122,7 @@ public class OkHttpUtils {
             .url(path)
             .build();
         Call call = getInstance(context).newCall(request);
+
         call.enqueue(callback);
     }
 

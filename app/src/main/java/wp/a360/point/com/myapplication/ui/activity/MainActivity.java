@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,6 +16,10 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import wp.a360.point.com.myapplication.R;
 import wp.a360.point.com.myapplication.ui.adapter.MenuAdapter;
 import wp.a360.point.com.myapplication.ui.base.MenuFragmentActivity;
@@ -55,7 +62,9 @@ public class MainActivity extends MenuFragmentActivity {
     /**搜索界面*/
     SearchFragment searchFragment;
 
-    private int flResId = R.id.fl_menu_container;
+    private int flResId1 = R.id.fl_menu_container1;
+    private int flResId2 = R.id.fl_menu_container2;
+    private int flResId3 = R.id.fl_menu_container3;
     private SlidingMenu slidingMenu;
     private HomeFragment.SlidemenuClickListener listener;
     @Override
@@ -76,14 +85,20 @@ public class MainActivity extends MenuFragmentActivity {
     @Override
     public void initView(View view) {
         x.view().inject(this,mContextView);
+        //创建对象
         slidingMenu=new SlidingMenu(this);
         slidingMenu.setSlidingEnabled(true);//设置启动滑动
+        List<ImageView> image = new ArrayList<>();
+        image.add(tab0);
+        image.add(tab1);
+        image.add(tab2);
+        translate(image);
         int[] tabResIds = { R.id.tab0, R.id.tab1, R.id.tab2 };
         super.initTab(tabResIds);
         if (mianFragment == null) {
             mianFragment = new HomeFragment();
         }
-        switchFragment(flResId, mianFragment);
+        switchFragment(flResId1, mianFragment);
     }
 
     @Override
@@ -102,11 +117,6 @@ public class MainActivity extends MenuFragmentActivity {
     }
     @Override
     public void doBusiness(Context mContext) {
-        //隐藏标题栏
-        //getSupportActionBar().hide();
-        // configure the SlidingMenu
-        //创建对象
-
         //设置滑动模式
         slidingMenu.setMode(SlidingMenu.LEFT);
         //SlidingMenu划出时主页面显示的剩余宽度
@@ -163,7 +173,7 @@ public class MainActivity extends MenuFragmentActivity {
                 if (mianFragment == null) {
                     mianFragment = new HomeFragment();
                 }
-                switchFragment(flResId, mianFragment);
+                switchFragment(flResId1, mianFragment);
                 break;
             case R.id.tab1:
                 slidingMenu.setSlidingEnabled(false);
@@ -171,7 +181,7 @@ public class MainActivity extends MenuFragmentActivity {
                 if (sortFragment == null) {
                     sortFragment = new SortFragment();
                 }
-                switchFragment(flResId, sortFragment);
+                switchFragment(flResId2, sortFragment);
                 break;
             case R.id.tab2:
                 slidingMenu.setSlidingEnabled(false);
@@ -179,12 +189,37 @@ public class MainActivity extends MenuFragmentActivity {
                 if (searchFragment == null) {
                     searchFragment = new SearchFragment();
                 }
-                switchFragment(flResId, searchFragment);
+                switchFragment(flResId3, searchFragment);
                 break;
         }
         return true;
+    }
 
-
+    public void translate(List<ImageView> image) {
+        TranslateAnimation translateAnimation;
+        for(int i=0;i<image.size();i++){
+            translateAnimation =new TranslateAnimation(
+                    Animation.RELATIVE_TO_SELF, 0f,  //X轴的开始位置
+                    Animation.RELATIVE_TO_SELF, 0f,  //X轴的结束位置
+                    Animation.RELATIVE_TO_SELF, 0f,  //Y轴的开始位置
+                    Animation.RELATIVE_TO_SELF, -0.1f);  //Y轴的结束位置
+            translateAnimation.setRepeatCount(Animation.INFINITE);//无限次数
+            translateAnimation.setRepeatMode(Animation.REVERSE);//RESTART表示从头开始，REVERSE表示从末尾倒播。
+            if(i==0){
+                translateAnimation.setDuration(1000);
+            }else if(i==1){
+                translateAnimation.setDuration(1500);
+            }else if(i==2){
+                translateAnimation.setDuration(2000);
+            }
+            image.get(i).setAnimation(translateAnimation);
+        }
 
     }
+
+
+
+
+
+
 }

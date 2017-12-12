@@ -9,22 +9,25 @@
         android:id="@+id/layout_top">
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <Button
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+            <ImageView
                 android:id="@+id/switch_slidemenu"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@mipmap/title_bar_menu"
                 android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="7dp"
                 android:text="每日精选"
-                android:textSize="24sp"
-                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textColor="@color/white"
                 android:layout_gravity="center"/>
         </FrameLayout>
     </LinearLayout>

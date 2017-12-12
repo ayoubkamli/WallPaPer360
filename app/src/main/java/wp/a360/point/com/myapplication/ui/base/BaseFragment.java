@@ -35,12 +35,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         } else{
             mContextView = mView;
         }
-
         initView();
         initData_();
-
-
-
         return mContextView;
     }
 
@@ -115,7 +111,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         super.onResume();
         //StatService.onResume(mContext);
         //StatService.onPageStart(mContext, "BaseFragment");
-
     }
 
     @Override

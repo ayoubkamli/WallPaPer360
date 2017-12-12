@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <ImageView
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/test"
+        android:scaleType="centerCrop"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="13dp"
+        android:onClick="toBack"
+        android:src="@mipmap/black"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/transparent"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/download_wallpaper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/download"
+            android:layout_marginRight="10dp"/>
+        <ImageView
+            android:id="@+id/setting_wallpaper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/setting_wallpaper"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"/>
+        <ImageView
+            android:id="@+id/collection_unselect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/collection_unselect"
+            android:layout_marginLeft="10dp"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wallpaper_loding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="#f5f5f5">
+        <com.wang.avi.AVLoadingIndicatorView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/circleProgressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            style="@style/AVLoadingIndicatorView"
+            app:indicatorName="BallClipRotateIndicator"
+            app:indicatorColor="@color/red"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

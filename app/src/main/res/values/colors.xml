@@ -31,5 +31,27 @@
     <!-- 线条颜色 -->
     <color name="bgColor_divier">#d7d7db</color>
 
+    <!--随机颜色-->
+    <color name="random_color1">#ff0000</color>
+    <color name="random_color2">#ef528d</color>
+    <color name="random_color3">#f42dbe</color>
+    <color name="random_color4">#c41cee</color>
+    <color name="random_color5">#7a11db</color>
+    <color name="random_color6">#371fef</color>
+    <color name="random_color7">#4c4675</color>
+    <color name="random_color8">#22cdf2</color>
+    <color name="random_color9">#1baeb0</color>
+    <color name="random_color10">#89e3d3</color>
+    <color name="random_color11">#2a8373</color>
+    <color name="random_color12">#27ec8d</color>
+    <color name="random_color13">#0f932e</color>
+    <color name="random_color14">#77ee71</color>
+    <color name="random_color15">#8cec38</color>
+    <color name="random_color16">#ddf361</color>
+    <color name="random_color17">#8e8c09</color>
+    <color name="random_color18">#f4b41a</color>
+    <color name="random_color19">#eea030</color>
+    <color name="random_color20">#f6c294</color>
+
 
 </resources>

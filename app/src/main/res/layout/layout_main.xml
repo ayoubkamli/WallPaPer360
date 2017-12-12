@@ -7,7 +7,17 @@
     android:fitsSystemWindows="true">
 
     <FrameLayout
-        android:id="@+id/fl_menu_container"
+        android:id="@+id/fl_menu_container1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+    <FrameLayout
+        android:id="@+id/fl_menu_container2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+    <FrameLayout
+        android:id="@+id/fl_menu_container3"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />

@@ -9,7 +9,8 @@
     <ImageView android:id="@+id/iv_headMenuPic"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:background="@mipmap/ic_launcher"
+        android:background="@drawable/menu_icon_shape"
+        android:src="@mipmap/ic_launcher"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="10dp"/>
     <TextView

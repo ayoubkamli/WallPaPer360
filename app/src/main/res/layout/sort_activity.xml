@@ -2,11 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:orientation="vertical"
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/my_sort_wallpaper"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/sort_head_gradient"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_centerVertical="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的壁纸"
+                        android:layout_marginLeft="15dp"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"/>
+                    <TextView
+                        android:id="@+id/sort_item_myNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0张"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"/>
+                </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="这是分类界面"
-        android:textSize="20dp"/>
+            </RelativeLayout>
+            <wp.a360.point.com.myapplication.ui.view.MyListView
+                android:id="@+id/sort_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:listSelector="@color/transparent"
+                android:scrollbars="none"
+                />
+
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
