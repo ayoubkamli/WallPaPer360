@@ -15,7 +15,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-
+    <!--设置壁纸所需要的权限-->
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
 
     <application
         android:allowBackup="true"
@@ -25,14 +26,16 @@
         android:supportsRtl="true"
         android:name=".ui.activity.MyAppLication"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.MainActivity">
+        <activity android:name="wp.a360.point.com.myapplication.ui.activity.GuideActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <!--主页面-->
+        <activity android:name="wp.a360.point.com.myapplication.ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
         <!--图片预览界面-->
         <activity android:name="wp.a360.point.com.myapplication.ui.activity.WallPaperDetailsActivity"
             android:screenOrientation="portrait" />
@@ -42,6 +45,14 @@
         <!--搜索结果界面-->
         <activity android:name="wp.a360.point.com.myapplication.ui.activity.SearchResultActivity"
             android:screenOrientation="portrait" />
+        <!--我的收藏下载界面-->
+        <activity android:name="wp.a360.point.com.myapplication.ui.activity.MyWallpaperActivity"
+            android:screenOrientation="portrait" />
+
+
+
+
+
     </application>
 
 </manifest>

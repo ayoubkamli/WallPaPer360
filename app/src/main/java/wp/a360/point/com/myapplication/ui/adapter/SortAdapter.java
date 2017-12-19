@@ -6,12 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.squareup.picasso.Picasso;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -61,27 +59,31 @@ public class SortAdapter extends BaseAdapter {
             }else{
                 sortHolder = (SortHolder) view.getTag();
             }
-            ImageType imageType = mData.get(i);
-            sortHolder.sort_item_name.setText(imageType.getImageTypeName()+""); //分类名称
-            sortHolder.sort_item_number.setText(imageType.getImageTypeNum()+"张");
-            /*Picasso.with(context)
-                    .load(imageType.getImageTypeBackground())
-                    .error(R.drawable.test5)
-                    .centerCrop()
-                    .fit()
-                    .into(sortHolder.sort_background);*/
-            if(imageType.getImageTypeBackground()!=null){
-                Glide.with(context)
-                        .load(imageType.getImageTypeBackground())
-                        //设置加载中图片
-                        .placeholder(R.mipmap.lodinging) // can also be a drawable
-                        //加载失败图片
-                        .error(R.mipmap.lodinging)
-                        //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .thumbnail(0.1f) //设置缩略图支持
-                        .fitCenter()
-                        .into(sortHolder.sort_background);
+            if(mData!=null){
+                ImageType imageType = mData.get(i);
+                if(imageType!=null){
+                    sortHolder.sort_item_name.setText(imageType.getImageTypeName()+""); //分类名称
+                    if(imageType.getImageTypeNum()>=0){
+                        sortHolder.sort_item_number.setText(imageType.getImageTypeNum()+"张");
+                    }else{
+                        sortHolder.sort_item_number.setText("0张");
+                    }
+
+                    if(imageType.getImageTypeBackground()!=null){
+                        Glide.with(context)
+                                .load(imageType.getImageTypeBackground())
+                                //设置加载中图片
+                                .placeholder(R.mipmap.lodinging) // can also be a drawable
+                                //加载失败图片
+                                .error(R.mipmap.lodinging)
+                                //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .thumbnail(0.1f) //设置缩略图支持
+                                .fitCenter()
+                                .into(sortHolder.sort_background);
+                }
+            }
+
             }
 
             return view;

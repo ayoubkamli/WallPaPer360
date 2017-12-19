@@ -54,7 +54,6 @@ public class SearchResultActivity extends BaseActivity implements XRefreshView.X
     private boolean isLoadOK;//false ：还有数据，true :没有数据
     private List<DailySelect> mData =new ArrayList<>();
     private TypeDetailsAdapter tdAdapter;
-    private String topImageUrl;
     private String searchKeyName = null;
     private static int type = 1; //分页，从0页开始拿
     @Override
@@ -252,7 +251,8 @@ public class SearchResultActivity extends BaseActivity implements XRefreshView.X
         });
     }
 
-
+    List<DailySelect> data1 = new ArrayList<>();
+    DailySelect topImageUrl;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -271,11 +271,10 @@ public class SearchResultActivity extends BaseActivity implements XRefreshView.X
                             }
                             start = start+image.size();//不为空，记录加一页数据
                             type=0;
-                            List<DailySelect> data1 = new ArrayList<>();
                             //取第一条数据作为顶部展示图片
                             for(int i = 0;i<image.size();i++){
                                 if(i==0){
-                                    topImageUrl = image.get(i).getImageUrl();
+                                    topImageUrl = image.get(i);
                                 }else{
                                     data1.add(image.get(i));
                                 }
@@ -283,7 +282,7 @@ public class SearchResultActivity extends BaseActivity implements XRefreshView.X
                             mData.addAll(data1);
                             if(topImageUrl!=null){
                                 Glide.with(mContext)
-                                        .load(topImageUrl)
+                                        .load(topImageUrl.getImageUrl())
                                         //设置加载中图片
                                         .placeholder(R.mipmap.lodinging) // can also be a drawable
                                         //加载失败图片
@@ -304,7 +303,6 @@ public class SearchResultActivity extends BaseActivity implements XRefreshView.X
                                     Intent intent = new Intent(mContext,WallPaperDetailsActivity.class);
                                     DailySelect dailySelect = mData.get(i);
                                     intent.putExtra("dailySelect",dailySelect);
-                                    intent.putExtra("listDailySelect",(Serializable)mData);
                                     startActivity(intent);
                                 }
                             });

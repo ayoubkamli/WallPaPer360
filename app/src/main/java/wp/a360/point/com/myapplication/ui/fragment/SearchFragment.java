@@ -68,6 +68,7 @@ public class SearchFragment extends BaseFragment {
     @Override
     protected void initData() {
         //search_edit.setInputType(InputType.TYPE_NULL);
+        search_edit.setHint(getResources().getString(R.string.search_hint));
         InputMethodManager inputMethodManager = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(search_edit.getWindowToken(), 0);
         search_commit.setOnClickListener(this);

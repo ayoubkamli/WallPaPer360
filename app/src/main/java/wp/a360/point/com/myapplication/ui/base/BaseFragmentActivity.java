@@ -17,6 +17,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import wp.a360.point.com.myapplication.R;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.widget.SystemBarTintManager;
@@ -61,8 +65,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements V
         }
         if (isSetActionBarColor) {
             setActionBarColor();
-        }
-        ;
+        } ;
         setContentView(mContextView);
         if (!isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -87,11 +90,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements V
             }
             if ((fragment != null) && (this.mFragment != fragment)) {
                 ft = this.fm.beginTransaction();
-                if (this.mFragment == null)
+                if (this.mFragment == null) {
                     ft.add(flResId, fragment).commit();
-                else if (!fragment.isAdded())
+                }else if (!fragment.isAdded()) {
                     ft.hide(this.mFragment).add(flResId, fragment).commit();
-                else {
+                }else {
                     ft.hide(this.mFragment).show(fragment).commit();
                 }
                 this.mFragment = fragment;
@@ -100,6 +103,54 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements V
             e.printStackTrace();
         }
     }
+    /**
+     * 保存Fragment
+     * @param flResId
+     * @param listFragments
+     */
+    List<Fragment> listFragments;
+    protected void setFragments(int [] flResId, List<Fragment> listFragments) {
+        try {
+            if ((flResId==null) || (this.fm == null) || (listFragments == null)) {
+                return ;
+            }
+            ft = this.fm.beginTransaction();
+            for(int i= 0;i<listFragments.size();i++){
+                ft.add(flResId[i], listFragments.get(i));
+            }
+            ft.commit();
+            this.listFragments = listFragments;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 显示Fragment
+     * @param flResId
+     * @param fragments
+     */
+    protected void showFragment(int flResId, Fragment fragments) {
+        try {
+            if ((flResId==0) || (this.fm == null) || (fragments == null)) {
+                return ;
+            }
+            if ((fragments != null) && (this.listFragments != null)) {
+                ft = this.fm.beginTransaction();
+                for(int i = 0;i<listFragments.size();i++){
+                    if(listFragments.get(i)==fragments){
+                        ft.show(fragments);
+                    }else{
+                        ft.hide(listFragments.get(i));
+                    }
+                }
+                ft.commit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * 替换
      * @param flResId

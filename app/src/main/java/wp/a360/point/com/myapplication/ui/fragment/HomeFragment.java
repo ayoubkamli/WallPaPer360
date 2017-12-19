@@ -1,12 +1,19 @@
 package wp.a360.point.com.myapplication.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.ArrayMap;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.andview.refreshview.XRefreshView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -42,14 +49,20 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
     private MyListView home_list;
     @ViewInject(R.id.main_pull_refresh_view)
     private XRefreshView xRefreshView;
+    @ViewInject(R.id.home_topName)
+    private TextView home_topName;
     public static long lastRefreshTime;//刷新的时间
     public static int start = 0; //分页，从0页开始拿
     public int num = 8; //每页拿8条数据
     private boolean isLoadOK;//false ：还有数据，true :没有数据
     private HomeAdapter homeAdapter;
     private List<DailySelect> mData =new ArrayList<>();
-    private ArrayMap<String, DailySelect> collection = null;
+    private List<DailySelect> collection = null;
     private SlidemenuClickListener onSlidemenuListener;
+    private CollectionBoradCastReceiver collectionBoradCast;
+    private LocalBroadcastManager instance;
+
+
     private Handler mHadnler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -66,41 +79,19 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                                 isLoadOK = true;
                             }
                             start = start+mData.size();//不为空，记录加一页数据
-                           if(homeAdapter==null){
-                                homeAdapter = new HomeAdapter(mContext,mData,collection);
-                            }
+                           if(homeAdapter==null){homeAdapter = new HomeAdapter(mContext,mData,collection);}
                             home_list.setAdapter(homeAdapter);
                             home_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                public void onItemClick(AdapterView<?> adapterView, View view, int posiotion, long l) {
                                     Intent intent = new Intent(mContext,WallPaperDetailsActivity.class);
-                                    DailySelect dailySelect = mData.get(i);
+                                    DailySelect dailySelect = mData.get(posiotion);
                                     intent.putExtra("dailySelect",dailySelect);
-                                    intent.putExtra("listDailySelect",(Serializable)mData);
+                                    intent.putExtra("posiotion",posiotion);
                                     startActivity(intent);
                                 }
                             });
-                            /**点击收藏按钮事件的监听*/
-                            homeAdapter.setCollectionListener(new HomeAdapter.OnCollectionListener() {
-                                @Override
-                                public void onClickCollection(DailySelect dailySelect,int collectionType) {
-                                    //showToast("点击了收藏！");
-                                    try{
-                                        if(collectionType==Constant.Collection.COLLECTION_TYPE_ADD){ //为空，说明点击的图片没有收藏过
-                                            //增加收藏的操作
-                                            collectionImage(dailySelect,Constant.Collection.COLLECTION_TYPE_ADD);
-                                        }else{
-                                            //取消收藏的操作
-                                            collectionImage(dailySelect,Constant.Collection.COLLECTION_TYPE_CANCEL);
-                                        }
-                                    }catch (Exception ex){
-                                        showToast("收藏失败！");
-                                        showLog("收藏异常信息："+ex.getMessage().toString());
-                                        ex.printStackTrace();
-                                    }
-                                }
-                            });
-
+                            initCollection(homeAdapter);
                         }else{
                             isLoadOK=true;
                         }
@@ -126,50 +117,66 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
         }
     };
 
+    private void initCollection(HomeAdapter homeAdapter) {
+        /**点击收藏按钮事件的监听*/
+        homeAdapter.setCollectionListener(new HomeAdapter.OnCollectionListener() {
+            @Override
+            public void onClickCollection(DailySelect dailySelect,int collectionType,List<DailySelect> collection) {
+                try{
+                    if(collection==null){collection = new ArrayList<>();}
+                    if(collectionType==Constant.Collection.COLLECTION_TYPE_ADD){ //为空，说明点击的图片没有收藏过 DailySelect
+                        //增加收藏的操作
+                        dailySelect.setCollectionNumber(dailySelect.getCollectionNumber()+1);
+                        collection.add(dailySelect);
+                        SharedPreferencesUtils.getInstance(mContext).setDataList("collection",collection);
+                        collectionImage(dailySelect,Constant.Collection.COLLECTION_TYPE_ADD);
+                    }
+                }catch (Exception ex){
+                    showToast("收藏失败！");
+                    showLog("收藏异常信息："+ex.getMessage().toString());
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
     /**
      * 增，减收藏
      * @param dailySelect 点击该图片的实体类
      * @param collectionType  增加，减少标识
      */
-    private void collectionImage(DailySelect dailySelect, final int collectionType) {
-        String collectionUrl = Constant.HttpConstants.collectionImage;
-        ArrayMap<String,String> am = new ArrayMap<>();
-        am.put(Constant.HttpConstants.imageID,dailySelect.getImageID()+"");
-        am.put(Constant.HttpConstants.type,collectionType+"");
-        XutilsHttp.xUtilsPost(collectionUrl, am, new XutilsHttp.XUilsCallBack() {
+    private void collectionImage(final DailySelect dailySelect, final int collectionType) {
+        new Thread(){
             @Override
-            public void onResponse(final String result) {
-                mHadnler.post(new Runnable() {
+            public void run() {
+                String collectionUrl = Constant.HttpConstants.collectionImage;
+                ArrayMap<String,String> am = new ArrayMap<>();
+                am.put(Constant.HttpConstants.imageID,dailySelect.getImageID()+"");
+                am.put(Constant.HttpConstants.type,collectionType+"");
+                XutilsHttp.xUtilsPost(collectionUrl, am, new XutilsHttp.XUilsCallBack() {
                     @Override
-                    public void run() {
-                        showLog("收藏结果信息"+result+"");
-                        if(result.equals("yes")){
-                            if(collectionType==Constant.Collection.COLLECTION_TYPE_ADD){
-                                showToast("添加收藏");
-                            }else{
-                                showToast("取消收藏");
+                    public void onResponse(final String result) {
+                        mHadnler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showLog("收藏结果信息："+result+"");
                             }
-                            return;
-                        }showToast("收藏失败！");
+                        });
                     }
-                });
-            }
-
-            @Override
-            public void onFail(final String result) {
-                mHadnler.post(new Runnable() {
                     @Override
-                    public void run() {
-                        showToast("收藏失败");
-                        showLog("收藏失败信息："+result.toString());
+                    public void onFail(final String result) {
+                        mHadnler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast("收藏失败");
+                                showLog("收藏失败信息："+result.toString());
+                            }
+                        });
                     }
                 });
             }
-        });
+        }.start();
     }
-
-
-
 
     @Override
     public View bindView() {
@@ -186,10 +193,16 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
     @Override
     protected void initData() {
         switch_slidemenu.setOnClickListener(this);
+        home_topName.setText(getResources().getString(R.string.home_topName));
+        instance = LocalBroadcastManager.getInstance(mContext);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.COLLECTION_ACTION);
+        collectionBoradCast = new CollectionBoradCastReceiver();
+        instance.registerReceiver(collectionBoradCast,intentFilter);
+
         initRefreshView();
         getDailySelect();
     }
-
     /**初始化下拉刷新控件*/
     private void initRefreshView() {
         // 设置是否可以下拉刷新
@@ -369,6 +382,33 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
     @Override
     public void onResume() {
         super.onResume();
-        collection = SharedPreferencesUtils.getInstance(mContext).getHashMapData("collection", DailySelect.class);
+        collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(collectionBoradCast!=null){
+            instance.unregisterReceiver(collectionBoradCast);
+        }
+    }
+
+    class CollectionBoradCastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals(Constant.COLLECTION_ACTION)){
+                int position = intent.getIntExtra("position", 0);
+                int clickNumber = intent.getIntExtra("clickNumber", 0);
+                if(homeAdapter!=null){
+                    homeAdapter.upView(home_list,position,clickNumber);
+                }
+            }
+        }
+    }
+
+
+
+
+
 }

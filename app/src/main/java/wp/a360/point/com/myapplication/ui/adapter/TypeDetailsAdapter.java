@@ -47,6 +47,14 @@ public class TypeDetailsAdapter extends BaseAdapter {
         return i;
     }
 
+    public void cleanRefresh(List<DailySelect> mData1){
+        if(mData!=null){
+            mData.clear();
+        }
+        this.mData = mData1;
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         TypeDetailsHolder  tdHolder;
@@ -58,22 +66,25 @@ public class TypeDetailsAdapter extends BaseAdapter {
         }else{
             tdHolder = (TypeDetailsHolder) view.getTag();
         }
-        DailySelect dailySelect = mData.get(i);
-        if(dailySelect.getImageUrl()!=null){
-            Glide.with(context)
-                    .load(dailySelect.getImageUrl())
-                    //设置加载中图片
-                    .placeholder(R.mipmap.lodinging) // can also be a drawable
-                    //加载失败图片
-                    .error(R.mipmap.lodinging)
-                    //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .thumbnail(1f) //设置缩略图支持
-                    .centerCrop()
-                    .into(tdHolder.type_details_item_image);
+            if(mData!=null){
+                DailySelect dailySelect = mData.get(i);
+                if(dailySelect!=null){
+                    if(dailySelect.getImageUrl()!=null){
+                        Glide.with(context)
+                                .load(dailySelect.getImageUrl())
+                                //设置加载中图片
+                                .placeholder(R.mipmap.lodinging) // can also be a drawable
+                                //加载失败图片
+                                .error(R.mipmap.lodinging)
+                                //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .thumbnail(1f) //设置缩略图支持
+                                .centerCrop()
+                                .into(tdHolder.type_details_item_image);
+                }
+            }
+
         }
-
-
         return view;
     }
     public void refresh(List<DailySelect> listData) {

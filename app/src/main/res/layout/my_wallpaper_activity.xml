@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+    <android.support.v4.view.ViewPager
+        android:id="@id/mywallpaper_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="toBack"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/black"/>
+        <wp.a360.point.com.myapplication.ui.view.PagerSlidingTabStrip
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@id/pleasure_tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dip"
+            android:background="@color/transparent"
+            android:textColor="@color/bgColor_overlay_black"
+            android:textSize="16.0dip"
+            app:pstsDividerColor="@color/transparent"
+            app:zmsTabTextColor="@color/bgColor_overlay_black"
+            app:pstsIndicatorColor="@color/system_bar_color"
+            app:pstsIndicatorHeight="1.0dip"
+            app:pstsShouldExpand="true"
+            app:pstsTabPaddingLeftRight="10.0dip"
+            app:selectedTabTextColor="@color/system_bar_color"
+            app:pstsUnderlineColor="@color/transparent"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,5 +1,9 @@
 package wp.a360.point.com.myapplication.ui.constant;
 
+import android.os.Environment;
+
+import java.io.File;
+
 /**
  * Created by DN on 2017/12/5.
  */
@@ -7,7 +11,7 @@ package wp.a360.point.com.myapplication.ui.constant;
 public class Constant {
 
     //目录
-    public static final String[] SETTINGS = {"一屏一换","清理缓存","退出应用"};
+    public static final String[] SETTINGS = {"清理缓存","退出应用"};
     //链接服务器获取数据的开关
     public static final  boolean isInter = false;
     /**
@@ -28,6 +32,12 @@ public class Constant {
     //网络请求成功码
     public static final int RESULT = 100;
 
+    public static final  int  PERMISSION_CODE = 100;
+    public static final  int  REQUEST_CODE_SETTING = 100;
+
+    public static final  String COLLECTION_ACTION = "clickCollection";
+
+    public  static  final  String clearImagePath = Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator + "360wallpaper";
     /**
      * 增，减 收藏图片的标识
      */
@@ -35,6 +45,14 @@ public class Constant {
         public  static final  int COLLECTION_TYPE_ADD = 1;
         public  static final  int COLLECTION_TYPE_CANCEL = 2;
     }
+    /**
+     * 我的壁纸tab
+     */
+    public static class MyTabs{
+        public static final String DOWNLOAD_WALLLPAPER = "已下载";
+        public static final String COLLECTION_WALLLPAPER = "已收藏";
+    }
+
 
     /**网络请求地址*/
     public static class HttpConstants{
@@ -49,8 +67,6 @@ public class Constant {
         public static final String imageID = "imageID"; //参数 图片ID
         public static final String type = "type"; //参数 1：标识收藏  2：标识取消收藏
 
-
-
         /**
          * 获取首页数据集合接口
          * */
@@ -64,8 +80,6 @@ public class Constant {
          * */
         public static final String getTypeData =  URL_Web+"/ImageType/findAllImageType";
         public static final String getTypeDetails =  URL_Web+"/image/findImageByimageTypeID";
-
-
 
         /**
          * 获取搜索界面数据集合接口

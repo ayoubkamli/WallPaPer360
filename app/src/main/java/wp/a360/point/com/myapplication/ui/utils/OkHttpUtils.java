@@ -9,15 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+
 
 /**
  * Created by DN on 2017/8/24.
@@ -31,14 +23,14 @@ import okhttp3.Response;
 
 public class OkHttpUtils {
 
-    private static  OkHttpClient client = null;
+   /* private static  OkHttpClient client = null;
     private static OkHttpClient.Builder builder;
     private static final long cacheSize = 1024*1024*40;//缓存文件最大限制大小40M
     private static String cachedirectory = FileUtils.getAbsolutePath() + "/360wallpaper";  //设置缓存文件路径
     private static Cache cache = new Cache(new File(cachedirectory), cacheSize);  //
     private static Context context;
 
-    /**由于okhttp3不建议创建多个对象，所以采用饿汉式的单例模式*/
+    *//**由于okhttp3不建议创建多个对象，所以采用饿汉式的单例模式*//*
     public static OkHttpClient getInstance(Context c) {
         context = c;
         if (client == null) {
@@ -91,7 +83,7 @@ public class OkHttpUtils {
         }
     };
 
-    /**接口的参数拼接*/
+    *//**接口的参数拼接*//*
     private static String getPlayPath(ArrayMap<String,String> map, String playPath){
         if(null==map&&map.equals(""))return playPath;//参数为空，直接返回地址
         StringBuffer sb = new StringBuffer();
@@ -108,12 +100,12 @@ public class OkHttpUtils {
     }
 
 
-    /**
+    *//**
      *  maxStale Get请求异步(缓存)
      *@param staletime 过时时间，秒为单位
      * @param url 请求地址
      * @param callback 回调
-     */
+     *//*
     public static void doStaleTimeGet(Context context, String url, ArrayMap<String, String> mapParams, int staletime,Callback callback) {
         String path = getPlayPath(mapParams, url);//拼接参数，获取地址
         Request request = new Request.Builder()
@@ -126,12 +118,12 @@ public class OkHttpUtils {
         call.enqueue(callback);
     }
 
-    /**
+    *//**
      * Post请求发送键值对数据(无缓存)
      * @param url
      * @param mapParams
      * @param callback
-     */
+     *//*
     public static void doPost(Context context, String url, ArrayMap<String, String> mapParams, Callback callback) {
         FormBody.Builder builder = new FormBody.Builder();
         for (String key : mapParams.keySet()) {
@@ -145,11 +137,11 @@ public class OkHttpUtils {
         call.enqueue(callback);
     }
 
-    /**
+    *//**
      * 普通Get请求(无参数,无缓存)
      * @param url
      * @param callback
-     */
+     *//*
     public static void doGet(Context context,String url,Callback callback) {
         Request request = new Request.Builder()
                 //.cacheControl(new CacheControl.Builder().maxAge(0, TimeUnit.SECONDS).build())
@@ -159,11 +151,11 @@ public class OkHttpUtils {
         call.enqueue(callback);
     }
 
-    /**
+    *//**
      * 普通Get请求(无缓存)
      * @param url
      * @param callback
-     */
+     *//*
     public static void doUnGet(Context context,String url, ArrayMap<String, String> mapParams,Callback callback) {
         String path = getPlayPath(mapParams, url);//拼接参数，获取地址
         Request request = new Request.Builder()
@@ -174,13 +166,13 @@ public class OkHttpUtils {
         call.enqueue(callback);
     }
 
-    /**
+    *//**
      * maxAge Get同步请求
      * @param context //x上下文
      * @param url 请求地址
      * @param mapParams 请求参数
      * *get请求，并缓存请求数据，返回的是缓存数据，注意，如果超出了maxAge，缓存会被清除，回调onFailure
-     */
+     *//*
     public static Call doMaxAgeExeGet(Context context,String url, ArrayMap<String, String> mapParams) {
         String path = getPlayPath(mapParams, url);//拼接参数，获取地址
         //创建缓存文件
@@ -191,14 +183,14 @@ public class OkHttpUtils {
         return call;
     }
 
-    /**与下载有关*/
-    /**
+    *//**与下载有关*//*
+    *//**
      * @param url        下载链接
      * @param startIndex 下载起始位置
      * @param endIndex   结束为止
      * @param callback   回调
      * @throws IOException
-     */
+     *//*
     public void downloadFileByRange(String url, long startIndex, long endIndex, Callback callback) throws IOException {
         // 创建一个Request
         // 设置分段下载的头信息。 Range:做分段数据请求,断点续传指示下载的区间。格式: Range bytes=0-1024或者bytes:0-1024
@@ -215,9 +207,9 @@ public class OkHttpUtils {
                 .build();
         doAsync(request, callback);
     }
-    /**
+    *//**
      * 异步请求
-     */
+     *//*
     private void doAsync(Request request, Callback callback) throws IOException {
         //创建请求会话
         Call call = client.newCall(request);
@@ -225,9 +217,9 @@ public class OkHttpUtils {
         call.enqueue(callback);
     }
 
-    /**
+    *//**
      * 同步请求
-     */
+     *//*
     private Response doSync(Request request) throws IOException {
 
         //创建请求会话
@@ -235,8 +227,7 @@ public class OkHttpUtils {
         //同步执行会话请求
         return call.execute();
     }
-
-
+*/
 
 
 }

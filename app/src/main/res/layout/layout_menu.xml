@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/menu_linearlayout"
+    android:id="@id/menu_linearlayout"
     android:layout_width="200dp"
     android:layout_height="match_parent"
     android:background="@drawable/menu_spash"
     android:orientation="vertical" >
 
-    <ImageView android:id="@+id/iv_headMenuPic"
+    <ImageView
+        android:id="@id/iv_headMenuPic"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:background="@drawable/menu_icon_shape"
         android:src="@mipmap/ic_launcher"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="20dp"/>
     <TextView
+        android:id="@id/menu_appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:textColor="@color/white"
         android:textSize="20dp"/>
 
     <TextView
+        android:id="@id/menu_brief"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="抓住美的瞬间"
         android:textColor="@color/line_color"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="20dp"/>
 
-    <ListView android:layout_width="200dp"
-        android:layout_marginTop="5dp"
+    <ListView
+        android:id="@+id/menu_listview"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         android:listSelector="@color/transparent"
-        android:id="@+id/menu_listview"/>
+        />
 </LinearLayout>

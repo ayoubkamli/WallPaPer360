@@ -10,6 +10,9 @@
     <color name="black">#000000</color>
     <color name="red">#FE5C47</color>
     <color name="blue">#167EFB</color>
+    <color name="background_tab_pressed">#00000000</color>
+    <color name="activity_bg_white">#ffffffff</color>
+    <color name="text_black_light">#ff5c5e61</color>
     <!-- 覆盖颜色 -->
     <color name="bgColor_overlay_black">#95000000</color>
     <!-- 窗口背景颜色 -->
@@ -30,6 +33,8 @@
     <color name="textColor_actionsheet_msg">#8f8f8f</color>
     <!-- 线条颜色 -->
     <color name="bgColor_divier">#d7d7db</color>
+    <!--错误颜色-->
+    <color name="error_color">#7c7c7c</color>
 
     <!--随机颜色-->
     <color name="random_color1">#ff0000</color>
@@ -52,6 +57,7 @@
     <color name="random_color18">#f4b41a</color>
     <color name="random_color19">#eea030</color>
     <color name="random_color20">#f6c294</color>
+
 
 
 </resources>

@@ -7,23 +7,23 @@
     android:fitsSystemWindows="true">
 
     <FrameLayout
-        android:id="@+id/fl_menu_container1"
+        android:id="@id/fl_menu_container1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />
     <FrameLayout
-        android:id="@+id/fl_menu_container2"
+        android:id="@id/fl_menu_container2"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />
     <FrameLayout
-        android:id="@+id/fl_menu_container3"
+        android:id="@id/fl_menu_container3"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />
 
     <RelativeLayout
-        android:id="@+id/main_menu_table"
+        android:id="@id/main_menu_table"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@drawable/home_buttom_shape_gradient"
@@ -35,21 +35,21 @@
             android:layout_marginLeft="50dp"
             android:gravity="center">
             <ImageView
-                android:id="@+id/tab0"
+                android:id="@id/tab0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_home_select0"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"/>
             <ImageView
-                android:id="@+id/tab1"
+                android:id="@id/tab1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_home1"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"/>
             <ImageView
-                android:id="@+id/tab2"
+                android:id="@id/tab2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_home2"

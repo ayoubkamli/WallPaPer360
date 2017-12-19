@@ -1,6 +1,8 @@
 package wp.a360.point.com.myapplication.ui.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.text.TextUtils;
 
@@ -33,12 +35,23 @@ public class FileUtils {
      * @return
      */
     public static String getDefaultDirectory(String apkPath) {
-        if (TextUtils.isEmpty(apkPath)) {
-            DEFAULT_FILE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator + "appMarket" + File.separator;
-        }else{
-            return apkPath;
+        try{
+            if (TextUtils.isEmpty(apkPath)) {
+                DEFAULT_FILE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator + "360wallpaper";
+                File file = new File(DEFAULT_FILE_DIR);
+                if(!file.exists()){
+                    file.mkdirs();
+                }
+                DEFAULT_FILE_DIR = DEFAULT_FILE_DIR + File.separator;
+            }else{
+                return apkPath;
+            }
+            return DEFAULT_FILE_DIR;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
         }
-        return DEFAULT_FILE_DIR;
+
 
 
     }
@@ -129,6 +142,60 @@ public class FileUtils {
             }
         }
         return oldFile;
+    }
+
+    public static boolean isIntact(String filePath){
+        try{
+            //判断图片是否完整
+            Bitmap bitmap = BitmapFactory.decodeFile(filePath.toString());
+            if(bitmap!=null){
+                if(!bitmap.isRecycled()){
+                    bitmap.recycle();
+                    bitmap = null;
+                }
+                return true;
+            }
+            System.gc();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * @param file
+     * @return
+     */
+    public static void cleanImage(File file) throws Exception {
+        if (file.exists()) {  //文件夹是否存在
+            File[] list = file.listFiles();
+            for (File newFile : list) {
+                if (newFile.isDirectory()) {
+                    //是的话，返回步骤B
+                    cleanImage(file);
+                } else {
+                    newFile.delete();
+                }
+            }
+
+        }
+    }
+
+    public static boolean cleanFile(String imageUrl){
+        try{
+            String defaultDirectory = getDefaultDirectory(null);
+            String fileName = getFileName(imageUrl);
+            File file = new File(defaultDirectory+fileName);
+            if(file.exists()){
+                file.delete();
+                return true;
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+        return false;
     }
 
 

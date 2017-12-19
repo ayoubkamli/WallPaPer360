@@ -25,15 +25,14 @@
             android:orientation="horizontal"
             >
             <EditText
-                android:id="@+id/search_edit"
+                android:id="@id/search_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:hint="搜索你想要的壁纸"
                 android:paddingLeft="25dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"/>
             <ImageView
-                android:id="@+id/search_commit"
+                android:id="@id/search_commit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/search_ico"
@@ -44,21 +43,12 @@
 
     <wp.a360.point.com.myapplication.ui.view.FlowLayout
         xmlns:flowlayout="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/flow_layout"
+        android:id="@id/flow_layout"
         flowlayout:vertical_spacing="6dp"
         flowlayout:horizontal_spacing="20dp"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_height="wrap_content" />
-
-
-
-
-
-
-
-
-
 
 </LinearLayout>

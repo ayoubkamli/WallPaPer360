@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--layout_menu-->
+    <item name="menu_linearlayout" type="id">false</item>
+    <item name="iv_headMenuPic" type="id">false</item>
+    <item name="menu_listview" type="id">false</item>
+    <item name="menu_appName" type="id">false</item>
+    <item name="menu_brief" type="id">false</item>
+
+    <!--acttivity_main-->
+    <item name="main_slideMenu" type="id">false</item>
+    <item name="fl_menu_container1" type="id">false</item>
+    <item name="fl_menu_container2" type="id">false</item>
+    <item name="fl_menu_container3" type="id">false</item>
+    <item name="main_menu_table" type="id">false</item>
+    <item name="tab0" type="id">false</item>
+    <item name="tab1" type="id">false</item>
+    <item name="tab2" type="id">false</item>
+
+    <!--home-->
+    <!--home_top-->
+    <item name="home_list" type="id">false</item>
+    <item name="layout_top" type="id">false</item>
+    <item name="switch_slidemenu" type="id">false</item>
+    <item name="home_topName" type="id">false</item>
+    <item name="main_pull_refresh_view" type="id">false</item>
+
+    <!--imagetype_details_activity-->
+    <item name="typedetails_refresh_view" type="id">false</item>
+    <item name="details_top_image" type="id">false</item>
+    <item name="details_top_name" type="id">false</item>
+    <item name="details_type_size" type="id">false</item>
+    <item name="details_gridview" type="id">false</item>
+
+    <!--my_wallpaper_activity-->
+    <item name="mywallpaper_pager" type="id">false</item>
+    <item name="pleasure_tabs" type="id">false</item>
+
+    <!--wallpaper_details_activity-->
+    <item name="details_image" type="id">false</item>
+    <item name="download_wallpaper" type="id">false</item>
+    <item name="setting_wallpaper" type="id">false</item>
+    <item name="collection_unselect" type="id">false</item>
+    <item name="wallpaper_loding" type="id">false</item>
+    <item name="circleProgressbar" type="id">false</item>
+
+    <!--home_item_layout-->
+    <item name="home_item_image" type="id">false</item>
+    <item name="home_item_date" type="id">false</item>
+    <item name="ll_collection" type="id">false</item>
+    <item name="iv_collection" type="id">false</item>
+    <item name="home_item_cNumber" type="id">false</item>
+
+    <!--menu_list_item_layout-->
+    <item name="menu_item_icon" type="id">false</item>
+    <item name="menu_item_name" type="id">false</item>
+
+    <!--sort_item_layout-->
+    <item name="sort_background" type="id">false</item>
+    <item name="sort_item_name" type="id">false</item>
+    <item name="sort_item_number" type="id">false</item>
+
+    <!--type_details_item_layout-->
+    <item name="type_details_item_image" type="id">false</item>
+
+    <!--download_wallpaper_layout-->
+    <item name="my_wallpaper_content" type="id">false</item>
+    <item name="download_top_image" type="id">false</item>
+    <item name="download_top_name" type="id">false</item>
+    <item name="download_type_size" type="id">false</item>
+    <item name="download_gridview" type="id">false</item>
+    <item name="my_wallpaper_null" type="id">false</item>
+    <item name="my_wallpaper_error" type="id">false</item>
+
+    <!--search_activity-->
+    <item name="search_edit" type="id">false</item>
+    <item name="search_commit" type="id">false</item>
+    <item name="flow_layout" type="id">false</item>
+
+    <!--sort_activity-->
+    <item name="my_sort_wallpaper" type="id">false</item>
+    <item name="sort_item_myNumber" type="id">false</item>
+    <item name="sort_list" type="id">false</item>
+    <item name="sort_myWallpaperName" type="id">false</item>
+
+    <!--dialog_layout_svprogresshud-->
+    <item name="sv_outmost_container" type="id">false</item>
+
+    <!--dialog_view_svprogressdefault-->
+    <item name="ivBigLoading" type="id">false</item>
+    <item name="ivSmallLoading" type="id">false</item>
+    <item name="circleProgressBar" type="id">false</item>
+    <item name="tvMsg" type="id">false</item>
+
+    <!--guide_activity-->
+    <item name="iv_guide" type="id">false</item>
+
+
+
+
+</resources>

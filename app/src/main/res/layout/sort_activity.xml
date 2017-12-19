@@ -12,7 +12,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <RelativeLayout
-                android:id="@+id/my_sort_wallpaper"
+                android:id="@id/my_sort_wallpaper"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="center_vertical"
@@ -26,17 +26,16 @@
                     android:gravity="center_vertical"
                     android:layout_centerVertical="true">
                     <TextView
+                        android:id="@id/sort_myWallpaperName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="我的壁纸"
                         android:layout_marginLeft="15dp"
                         android:textColor="@color/white"
                         android:textSize="25sp"/>
                     <TextView
-                        android:id="@+id/sort_item_myNumber"
+                        android:id="@id/sort_item_myNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0张"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="2dp"
                         android:textColor="@color/white"
@@ -45,7 +44,7 @@
 
             </RelativeLayout>
             <wp.a360.point.com.myapplication.ui.view.MyListView
-                android:id="@+id/sort_list"
+                android:id="@id/sort_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:listSelector="@color/transparent"

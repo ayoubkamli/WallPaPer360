@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,11 +25,13 @@ import java.util.List;
 
 import wp.a360.point.com.myapplication.R;
 import wp.a360.point.com.myapplication.ui.activity.ImageTypeDetailsActivity;
+import wp.a360.point.com.myapplication.ui.activity.MyWallpaperActivity;
 import wp.a360.point.com.myapplication.ui.adapter.SortAdapter;
 import wp.a360.point.com.myapplication.ui.base.BaseFragment;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
 import wp.a360.point.com.myapplication.ui.entity.ImageType;
+import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
 import wp.a360.point.com.myapplication.ui.utils.XutilsHttp;
 
 /**
@@ -39,6 +43,10 @@ public class SortFragment extends BaseFragment {
     private ListView sort_list;
     @ViewInject(R.id.my_sort_wallpaper)
     private RelativeLayout my_sort_wallpaper;
+    @ViewInject(R.id.sort_item_myNumber)
+    private TextView sort_item_myNumber;
+    @ViewInject(R.id.sort_myWallpaperName)
+    private TextView sort_myWallpaperName;
     private SortAdapter sortAdapter;
     private List<ImageType> mData = new ArrayList<>();
     @Override
@@ -59,10 +67,27 @@ public class SortFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        sort_list.setFocusable(false);
+        sort_myWallpaperName.setText(getResources().getString(R.string.sort_myWallpaperName));
+        List<DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
+        List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
+        if(collection!=null){
+            if(downloadImage==null){
+                sort_item_myNumber.setText(collection.size()+"张");
+            }else{
+                sort_item_myNumber.setText((collection.size()+downloadImage.size())+"张");
+            }
+        }else{
+            if(downloadImage==null){
+                sort_item_myNumber.setText("0张");
+            }else{
+                sort_item_myNumber.setText(downloadImage.size()+"张");
+            }
+        }
+
         /**
          * 获取服务器数据
          */
-
         String url = Constant.HttpConstants.getTypeData;
         XutilsHttp.xUtilsPost(url, null, new XutilsHttp.XUilsCallBack() {
             @Override
@@ -94,7 +119,8 @@ public class SortFragment extends BaseFragment {
     public void widgetClick(View v) {
         switch (v.getId()){
             case  R.id.my_sort_wallpaper:
-                showToast("查看我的壁纸");
+                Intent myWallpaper = new Intent(mContext,MyWallpaperActivity.class);
+                startActivity(myWallpaper);
                 break;
         }
     }
@@ -118,7 +144,7 @@ public class SortFragment extends BaseFragment {
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 //showToast("点击了"+mData.get(i).getImageTypeName()+"");
                                 if(mData==null){
-                                    showToast("此分类正在维护，对您造成不便请谅解！");
+                                    showToast("网络出了点问题，请稍后再试试！");
                                     return;}
                                 //mData.get(i).getImageTypeID()
                                 Intent intent = new Intent(mContext, ImageTypeDetailsActivity.class);
@@ -145,5 +171,23 @@ public class SortFragment extends BaseFragment {
         }
     };
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
+        List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
+        if(collection!=null){
+            if(downloadImage==null){
+                sort_item_myNumber.setText(collection.size()+"张");
+            }else{
+                sort_item_myNumber.setText((collection.size()+downloadImage.size())+"张");
+            }
+        }else{
+            if(downloadImage==null){
+                sort_item_myNumber.setText("0张");
+            }else{
+                sort_item_myNumber.setText(downloadImage.size()+"张");
+            }
+        }
+    }
 }

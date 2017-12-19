@@ -6,16 +6,20 @@ import android.util.ArrayMap;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import wp.a360.point.com.myapplication.ui.entity.Search;
 
 /** 
  * SharedPreferences的一个工具类，调用setParam就能保存String, Integer, Boolean, Float, Long类型的参数 
@@ -27,13 +31,18 @@ public class SharedPreferencesUtils {
     /**
      * 保存在手机里面的文件名 
      */  
-    private static final String FILE_NAME = "share_date"; //可自行修改
+    private static final String FILE_NAME1 = "share_date"; //可自行修改
+    private static final String FILE_NAME2 = "share_download"; //可自行修改
+    private static SharedPreferences.Editor download_Editor;
     private static SharedPreferences.Editor editor;
     private static SharedPreferences sp;
+    private static SharedPreferences download;
     private static SharedPreferencesUtils spu;
     public SharedPreferencesUtils(Context context){
-         sp = context.getApplicationContext().getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-         editor = sp.edit();
+         sp = context.getApplicationContext().getSharedPreferences(FILE_NAME1, Context.MODE_PRIVATE);
+        editor = sp.edit();
+        download = context.getApplicationContext().getSharedPreferences(FILE_NAME2, Context.MODE_PRIVATE);
+        download_Editor = download.edit();
     }
     //单例模式
     public static SharedPreferencesUtils getInstance(Context context) {
@@ -51,13 +60,13 @@ public class SharedPreferencesUtils {
     public void setParam( String key, Object object){
         String type = object.getClass().getSimpleName();
         if("String".equals(type)){
-            editor.putString(key, (String)object);  
+            editor.putString(key, (String)object);
         }  
-        else if("Integer".equals(type)){  
-            editor.putInt(key, (Integer)object);  
+        else if("Integer".equals(type)){
+            editor.putInt(key, (Integer)object);
         }  
-        else if("Boolean".equals(type)){  
-            editor.putBoolean(key, (Boolean)object);  
+        else if("Boolean".equals(type)){
+            editor.putBoolean(key, (Boolean)object);
         }  
         else if("Float".equals(type)){  
             editor.putFloat(key, (Float)object);  
@@ -152,6 +161,53 @@ public class SharedPreferencesUtils {
      * @param tag
      * @param datalist
      */
+    public  <T> boolean setDownloadList(String tag, List<T> datalist,boolean isClean) {
+        try{
+            //if (null == datalist || datalist.size() <= 0)
+             //   return false;
+            Gson gson = new Gson();
+            //转换成json数据，再保存
+            String strJson = gson.toJson(datalist);
+            if(isClean){
+                download_Editor.clear();
+            }else{
+                download_Editor.putString(tag, strJson);
+            }
+            download_Editor.commit();
+            return true;
+        }catch (Exception ex ){
+            Log.i("保存pag异常信息>>>",ex.toString()+"");
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    /**
+     * 获取List
+     * @param tag
+     * @return
+     */
+    public  <T>List<T> getDownloadList(String tag,Class<T> cls) {
+        try{
+            List<T> mList=new ArrayList<>();
+            Gson mGson = new Gson();
+            String strJson = download.getString(tag, null);
+            JsonArray array = new JsonParser().parse(strJson).getAsJsonArray();
+            for(final JsonElement elem : array){
+                mList.add(mGson.fromJson(elem, cls));
+            }
+            return mList;
+        }catch (Exception ex){
+            Log.i("获取pag异常信息>>>",ex.toString()+"");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 保存List
+     * @param tag
+     * @param datalist
+     */
     public  <T> boolean setDataList(String tag, List<T> datalist) {
         try{
             if (null == datalist || datalist.size() <= 0)
@@ -159,7 +215,7 @@ public class SharedPreferencesUtils {
             Gson gson = new Gson();
             //转换成json数据，再保存
             String strJson = gson.toJson(datalist);
-            editor.clear();
+            //download_Editor.clear();
             editor.putString(tag, strJson);
             editor.commit();
             return true;
@@ -175,25 +231,38 @@ public class SharedPreferencesUtils {
      * @param tag
      * @return
      */
-    public <T> List<T> getDataList(String tag) {
+    public  <T>List<T> getDataList(String tag,Class<T> cls) {
         try{
-            List<T> datalist=new ArrayList<T>();
+            List<T> mList=new ArrayList<>();
+            Gson mGson = new Gson();
             String strJson = sp.getString(tag, null);
-            if (null == strJson) {
-                return datalist;
+            JsonArray array = new JsonParser().parse(strJson).getAsJsonArray();
+            for(final JsonElement elem : array){
+                mList.add(mGson.fromJson(elem, cls));
             }
-            Gson gson = new Gson();
-            datalist = gson.fromJson(strJson, new TypeToken<List<T>>() {
-            }.getType());
-            return datalist;
+            return mList;
         }catch (Exception ex){
             Log.i("获取pag异常信息>>>",ex.toString()+"");
             ex.printStackTrace();
             return null;
         }
-
-
     }
+
+
+   /*
+   //次方法获取会抛java.lang.ClassCastException
+   com.google.gson.internal.LinkedTreeMap cannot be cast to XXXX.XXX.XX
+    public <T> List<T> getDataList(String tag) {
+        List<T> datalist=new ArrayList<T>();
+        String strJson = sp.getString(tag, null);
+        if (null == strJson) {
+            return datalist;
+        }
+        Gson gson = new Gson();
+        datalist = gson.fromJson(strJson, new TypeToken<List<T>>() {
+        }.getType());
+        return datalist;
+    }*/
 
 
 

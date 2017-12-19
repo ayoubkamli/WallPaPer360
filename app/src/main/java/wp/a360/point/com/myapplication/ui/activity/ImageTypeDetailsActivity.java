@@ -59,7 +59,7 @@ public class ImageTypeDetailsActivity extends BaseActivity implements XRefreshVi
     private boolean isLoadOK;//false ：还有数据，true :没有数据
     private List<DailySelect> mData =new ArrayList<>();
     private TypeDetailsAdapter tdAdapter;
-    private String topImageUrl;
+    private DailySelect topImageUrl;
     private int imageTypeID;
     private String imageTypeName = null;
     private String searchKeyName = null;
@@ -279,7 +279,7 @@ public class ImageTypeDetailsActivity extends BaseActivity implements XRefreshVi
                             //取第一条数据作为顶部展示图片
                             for(int i = 0;i<data.size();i++){
                                 if(i==0){
-                                    topImageUrl = data.get(i).getImageUrl();
+                                    topImageUrl = data.get(i);
                                 }else{
                                     data1.add(data.get(i));
                                 }
@@ -287,7 +287,7 @@ public class ImageTypeDetailsActivity extends BaseActivity implements XRefreshVi
                             mData.addAll(data1);
                             if(topImageUrl!=null){
                                 Glide.with(mContext)
-                                        .load(topImageUrl)
+                                        .load(topImageUrl.getImageUrl())
                                         //设置加载中图片
                                         .placeholder(R.mipmap.lodinging) // can also be a drawable
                                         //加载失败图片
