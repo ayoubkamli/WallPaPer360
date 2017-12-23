@@ -37,12 +37,11 @@ public class HomeAdapter extends BaseAdapter {
     private List<DailySelect> mData;
     private LayoutInflater layoutInflater;
     private List<DailySelect> collection;
-    private ArrayMap<Integer ,View> am = new ArrayMap<>();
 
-    public HomeAdapter(Context context, List<DailySelect> mData,List<DailySelect> collection){
+    public HomeAdapter(Context context, List<DailySelect> mData){
         this.context = context;
         this.mData = mData;
-        this.collection = collection;
+        this.collection = SharedPreferencesUtils.getInstance(context).getDataList("collection", DailySelect.class);
         layoutInflater = LayoutInflater.from(context);
 
     }
@@ -93,10 +92,13 @@ public class HomeAdapter extends BaseAdapter {
             }else{
                 homeHolder.home_item_date.setText("xx年xx月");
             }
-            if(collection!=null){
-                homeHolder.iv_collection.setImageResource(collection.contains(dailySelect.getImageID()+"")?R.mipmap.collection:R.mipmap.uncollection);
-            }else{
-                homeHolder.iv_collection.setImageResource(R.mipmap.uncollection);
+            List<DailySelect> collection = SharedPreferencesUtils.getInstance(context).getDataList("collection", DailySelect.class);
+            if(collection !=null){
+                    for(DailySelect ds: collection){
+                        if(ds.getImageID()==dailySelect.getImageID()){
+                            homeHolder.iv_collection.setImageResource(R.mipmap.collection);
+                        }
+                    }
             }
             if(dailySelect.getImageUrl()!=null){
                 Glide.with(context)

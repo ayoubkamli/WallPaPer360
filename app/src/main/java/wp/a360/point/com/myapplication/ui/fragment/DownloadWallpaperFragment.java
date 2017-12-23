@@ -1,6 +1,10 @@
 package wp.a360.point.com.myapplication.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.ArrayMap;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +26,7 @@ import wp.a360.point.com.myapplication.R;
 import wp.a360.point.com.myapplication.ui.activity.WallPaperDetailsActivity;
 import wp.a360.point.com.myapplication.ui.adapter.TypeDetailsAdapter;
 import wp.a360.point.com.myapplication.ui.base.BaseFragment;
+import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
 import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
 import wp.a360.point.com.myapplication.ui.view.MyGridView;
@@ -48,6 +53,10 @@ public class DownloadWallpaperFragment extends BaseFragment {
     private TextView my_wallpaper_error;
 
     private TypeDetailsAdapter tdAdapter;
+    private List<DailySelect> mData1 = new ArrayList();
+
+    private DownloadBoradCastReceiver downloadBoradCast;
+    private LocalBroadcastManager instance;
 
     @Override
     public View bindView() {
@@ -64,17 +73,26 @@ public class DownloadWallpaperFragment extends BaseFragment {
         x.view().inject(this,mContextView);
     }
 
-    List<DailySelect> mData = new ArrayList();
-    List<DailySelect> mData1 = new ArrayList();
+
     @Override
     protected void initData() {
         //查询已下载的图片
         download_gridview.setFocusable(false);
+
+        instance = LocalBroadcastManager.getInstance(mContext);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.DOWNLOAD_ACTION);
+        downloadBoradCast = new DownloadBoradCastReceiver();
+        instance.registerReceiver(downloadBoradCast,intentFilter);
+
         List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
         setData(downloadImage);
+
+
     }
     DailySelect clickSelect = null;
     private void setData(List<DailySelect> downloadImage) {
+        download_top_name.setText("已下载");
         if(downloadImage ==null){
             my_wallpaper_null.setVisibility(View.VISIBLE);
             my_wallpaper_content.setVisibility(View.GONE);
@@ -83,12 +101,10 @@ public class DownloadWallpaperFragment extends BaseFragment {
         }else {
             my_wallpaper_null.setVisibility(View.GONE);
             my_wallpaper_content.setVisibility(View.VISIBLE);
-            mData.addAll(downloadImage);
+            //mData.addAll(downloadImage);
             clickSelect = downloadImage.get(0);
             if (downloadImage.size() > 0) {
                 download_type_size.setText(downloadImage.size() + "张");
-                download_top_name.setText("已下载");
-                //download_top_image
                 Glide.with(mContext)
                         .load(clickSelect.getImageUrl())
                         //设置加载中图片
@@ -100,6 +116,15 @@ public class DownloadWallpaperFragment extends BaseFragment {
                         .thumbnail(1f) //设置缩略图支持
                         .fitCenter()
                         .into(download_top_image);
+                for (int i = 0; i < downloadImage.size(); i++) {
+                    if (downloadImage.get(i).getImageID() != clickSelect.getImageID()) {
+                        mData1.add(downloadImage.get(i));
+                    }
+                }
+                if (tdAdapter == null) {
+                    tdAdapter = new TypeDetailsAdapter(mContext, mData1);
+                }
+                download_gridview.setAdapter(tdAdapter);
                 download_top_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -109,26 +134,19 @@ public class DownloadWallpaperFragment extends BaseFragment {
                         startActivity(intent);
                     }
                 });
+                download_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
+                        DailySelect dailySelect = mData1.get(i);
+                        intent.putExtra("dailySelect", dailySelect);
+                        intent.putExtra("isCollection",2);
+                        startActivity(intent);
+                    }
+                });
+
             }
-            for (int i = 0; i < mData.size(); i++) {
-                if (mData.get(i).getImageID() != clickSelect.getImageID()) {
-                    mData1.add(mData.get(i));
-                }
-            }
-            if (tdAdapter == null) {
-                tdAdapter = new TypeDetailsAdapter(mContext, mData1);
-            }
-            download_gridview.setAdapter(tdAdapter);
-            download_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
-                    DailySelect dailySelect = mData1.get(i);
-                    intent.putExtra("dailySelect", dailySelect);
-                    intent.putExtra("isCollection",2);
-                    startActivity(intent);
-                }
-            });
+
         }
     }
 
@@ -138,6 +156,7 @@ public class DownloadWallpaperFragment extends BaseFragment {
     }
 
     private void setRefreshData(List<DailySelect> downloadImage){
+        download_top_name.setText("已下载");
         if(downloadImage ==null){
             my_wallpaper_null.setVisibility(View.VISIBLE);
             my_wallpaper_content.setVisibility(View.GONE);
@@ -149,7 +168,6 @@ public class DownloadWallpaperFragment extends BaseFragment {
                 my_wallpaper_content.setVisibility(View.VISIBLE);
                 clickSelect = downloadImage.get(0);
                 download_type_size.setText(downloadImage.size() + "张");
-                download_top_name.setText("已下载");
                 //download_top_image
                 Glide.with(mContext)
                         .load(clickSelect.getImageUrl())
@@ -162,14 +180,14 @@ public class DownloadWallpaperFragment extends BaseFragment {
                         .thumbnail(1f) //设置缩略图支持
                         .fitCenter()
                         .into(download_top_image);
-                List<DailySelect> refresh = new ArrayList();
+                List<DailySelect> ds = new ArrayList();
                 for (int i = 0; i < downloadImage.size(); i++) {
                     if (downloadImage.get(i).getImageID() != clickSelect.getImageID()) {
-                        refresh.add(downloadImage.get(i));
+                        ds.add(downloadImage.get(i));
                     }
                 }
                 if(tdAdapter!=null){
-                    tdAdapter.cleanRefresh(mData1);
+                    tdAdapter.cleanRefresh(ds);
                 }
                 download_top_image.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -187,12 +205,22 @@ public class DownloadWallpaperFragment extends BaseFragment {
             }
         }
     }
+
+
     @Override
-    public void onResume() {
-        super.onResume();
-        List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
-        setRefreshData(downloadImage);
+    public void onDestroy() {
+        super.onDestroy();
+        if(downloadBoradCast!=null){
+            instance.unregisterReceiver(downloadBoradCast);
+        }
     }
 
+    class DownloadBoradCastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
+            setRefreshData(downloadImage);
+        }
+    }
 
 }

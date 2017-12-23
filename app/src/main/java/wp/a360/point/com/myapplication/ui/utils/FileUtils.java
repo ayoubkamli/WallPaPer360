@@ -144,9 +144,13 @@ public class FileUtils {
         return oldFile;
     }
 
+    /**
+     * //判断图片是否完整
+     * @param filePath
+     * @return
+     */
     public static boolean isIntact(String filePath){
         try{
-            //判断图片是否完整
             Bitmap bitmap = BitmapFactory.decodeFile(filePath.toString());
             if(bitmap!=null){
                 if(!bitmap.isRecycled()){

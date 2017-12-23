@@ -122,6 +122,8 @@ public class WallPaperDetailsActivity extends BaseActivity {
             collection_unselect.setVisibility(View.GONE);
         }else if(isCollection==2){
             collection_unselect.setImageDrawable(getResources().getDrawable(R.mipmap.livepaperico));
+            download_wallpaper.setVisibility(View.GONE);
+
         }else{
             if(collection!=null){
                 boolean isContains = false;
@@ -221,7 +223,12 @@ public class WallPaperDetailsActivity extends BaseActivity {
                 if(mWallManager==null){
                     mWallManager =WallpaperManager.getInstance(this);
                 }
-                setWallPaper(mWallManager);
+                new Thread(){
+                    @Override
+                    public void run() {
+                        setWallPaper(mWallManager);
+                    }
+                }.start();
                 break;
             case R.id.collection_unselect:
                 if(isCollection==2){
@@ -236,6 +243,9 @@ public class WallPaperDetailsActivity extends BaseActivity {
                         }
                     }
                     SharedPreferencesUtils.getInstance(mContext).setDownloadList("downloadImage",list,false);
+                    //发送广播更新我的下载界面
+                    Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
                     finish();
                 }else{
                     if(collection==null){
@@ -370,6 +380,11 @@ public class WallPaperDetailsActivity extends BaseActivity {
                     }
                 }
             }else{
+                if(isCollection==1){
+                    //广播通知下载界面更新
+                    Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
+                }
                 Message msg = new Message();
                 msg.what=0;
                 msg.obj = "下载完成！可在我的壁纸中查看！";
@@ -386,7 +401,7 @@ public class WallPaperDetailsActivity extends BaseActivity {
     public void setWallPaper(WallpaperManager wallPaper) {
         try{
             String imageUrl1 = FileUtils.getDefaultDirectory(null) + FileUtils.getFileName(dailySelect.getImageUrl());
-            if(!FileUtils.isIntact(imageUrl1)){ //说明没有下载，先去下载
+            if(!FileUtils.isIntact(imageUrl1)){  //说明没有下载，先去下载
                 downloadImg = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
                 if(downloadImg==null){
                     downloadImg = new ArrayList<>();

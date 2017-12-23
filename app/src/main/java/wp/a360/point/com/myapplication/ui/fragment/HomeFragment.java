@@ -57,7 +57,6 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
     private boolean isLoadOK;//false ：还有数据，true :没有数据
     private HomeAdapter homeAdapter;
     private List<DailySelect> mData =new ArrayList<>();
-    private List<DailySelect> collection = null;
     private SlidemenuClickListener onSlidemenuListener;
     private CollectionBoradCastReceiver collectionBoradCast;
     private LocalBroadcastManager instance;
@@ -79,7 +78,7 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                                 isLoadOK = true;
                             }
                             start = start+mData.size();//不为空，记录加一页数据
-                           if(homeAdapter==null){homeAdapter = new HomeAdapter(mContext,mData,collection);}
+                           if(homeAdapter==null){homeAdapter = new HomeAdapter(mContext,mData);}
                             home_list.setAdapter(homeAdapter);
                             home_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
@@ -323,6 +322,7 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
      * 加载更多数据
      */
     private void loadData() {
+        final List<DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
         String url = Constant.HttpConstants.getHomeData;
         ArrayMap<String,String> arrayMap = new ArrayMap<>();
         arrayMap.put(Constant.HttpConstants.pageNum,start+"");
@@ -343,7 +343,7 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                                 if(listData!=null){
                                     start = start+listData.size();
                                     if(homeAdapter==null){
-                                        homeAdapter = new HomeAdapter(mContext,mData,collection);
+                                        homeAdapter = new HomeAdapter(mContext,mData);
                                     }
                                     homeAdapter.refresh(listData,collection);
                                     if(!xRefreshView.isStopLoadMore()){
@@ -382,7 +382,7 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
     @Override
     public void onResume() {
         super.onResume();
-        collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
+
     }
 
     @Override

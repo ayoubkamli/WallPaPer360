@@ -36,6 +36,7 @@ public class Constant {
     public static final  int  REQUEST_CODE_SETTING = 100;
 
     public static final  String COLLECTION_ACTION = "clickCollection";
+    public static final  String DOWNLOAD_ACTION = "downloadCollection";
 
     public  static  final  String clearImagePath = Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator + "360wallpaper";
     /**
@@ -57,7 +58,7 @@ public class Constant {
     /**网络请求地址*/
     public static class HttpConstants{
         private static final String URL_WEB_ZS = "http://120.24.75.75/GameAnswer";// 正式Ui
-        private static final String URL_WEB_NW_W = "http://192.168.0.129:8088/WallPaper"; // 本地服务器接口
+        private static final String URL_WEB_NW_W = "http://192.168.0.127:8088/WallPaper"; // 本地服务器接口
         private static final String URL_Web = isInter ? URL_WEB_ZS: URL_WEB_NW_W;
         public static final String pageNum = "start";//参数 分页:从第几条开始拿
         public static final String pageSize = "num"; //参数 拿多少条
