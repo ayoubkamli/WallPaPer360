@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -25,7 +26,9 @@ import java.util.List;
 import wp.a360.point.com.myapplication.R;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
+import wp.a360.point.com.myapplication.ui.utils.LogUtils;
 import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
+import wp.a360.point.com.myapplication.ui.utils.XutilsHttp;
 import wp.a360.point.com.myapplication.ui.view.MyListView;
 
 /**
@@ -36,21 +39,14 @@ public class HomeAdapter extends BaseAdapter {
     private Context context;
     private List<DailySelect> mData;
     private LayoutInflater layoutInflater;
-    private List<DailySelect> collection;
+    private List<String> collection;
 
     public HomeAdapter(Context context, List<DailySelect> mData){
         this.context = context;
         this.mData = mData;
-        this.collection = SharedPreferencesUtils.getInstance(context).getDataList("collection", DailySelect.class);
+        this.collection = SharedPreferencesUtils.getInstance(context).getDownloadList("collection", String.class);
         layoutInflater = LayoutInflater.from(context);
 
-    }
-    private OnCollectionListener collectionListener;
-    public interface  OnCollectionListener{
-        void onClickCollection(DailySelect dailySelect,int collectionType,List<DailySelect> collection);
-    }
-    public void setCollectionListener(OnCollectionListener collectionListener) {
-        this.collectionListener = collectionListener;
     }
 
     @Override
@@ -69,7 +65,7 @@ public class HomeAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int position, View view, ViewGroup viewGroup) {
         final HomeHolder homeHolder;
         if(view==null){
             homeHolder = new HomeHolder();
@@ -79,36 +75,35 @@ public class HomeAdapter extends BaseAdapter {
         }else{
             homeHolder = (HomeHolder) view.getTag();
         }
-        final DailySelect dailySelect = mData.get(i);
-        if(dailySelect!=null){
-            if(dailySelect.getCollectionNumber()>=0){
-                int collectionNumber = dailySelect.getCollectionNumber();
+        final DailySelect ds = mData.get(position);
+        if(ds!=null){
+            if(ds.getCollectionNumber()>=0){
+                int collectionNumber = ds.getCollectionNumber();
                 homeHolder.home_item_cNumber.setText(collectionNumber+"");
             }else{
                 homeHolder.home_item_cNumber.setText("0");
             }
-            if(dailySelect.getImageDate()!=null&&!dailySelect.getImageDate().equals("")){
-                homeHolder.home_item_date.setText(dailySelect.getImageDate()+"");
+            if(ds.getImageDate()!=null&&!ds.getImageDate().equals("")){
+                homeHolder.home_item_date.setText(ds.getImageDate()+"");
             }else{
                 homeHolder.home_item_date.setText("xx年xx月");
             }
-            List<DailySelect> collection = SharedPreferencesUtils.getInstance(context).getDataList("collection", DailySelect.class);
             if(collection !=null){
-                    for(DailySelect ds: collection){
-                        if(ds.getImageID()==dailySelect.getImageID()){
-                            homeHolder.iv_collection.setImageResource(R.mipmap.collection);
-                        }
-                    }
+                if(collection.contains(ds.getImageUrl()+"")){
+                    homeHolder.iv_collection.setImageResource(R.mipmap.collection);
+                }else{
+                    homeHolder.iv_collection.setImageResource(R.mipmap.uncollection);
+                }
             }
-            if(dailySelect.getImageUrl()!=null){
+            if(ds.getImageUrl()!=null){
                 Glide.with(context)
-                        .load(dailySelect.getImageUrl())
+                        .load(ds.getImageUrl())
                         //设置加载中图片
                         .placeholder(R.mipmap.lodinging) // can also be a drawable
                         //加载失败图片
                         .error(R.mipmap.lodinging)
                         //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源,SOURCE：缓存原始数据
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        //.diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .thumbnail(1f) //设置缩略图支持
                         .fitCenter()
                         .into(homeHolder.home_item_image);
@@ -117,27 +112,25 @@ public class HomeAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     try{
-                        List<DailySelect> collection = SharedPreferencesUtils.getInstance(context).getDataList("collection", DailySelect.class);
-                        if(collection==null){
+                        List<String> collection = SharedPreferencesUtils.getInstance(context).getDownloadList("collection", String.class);
+                        if(collection ==null){
                             homeHolder.iv_collection.setImageResource(R.mipmap.collection);
-                            homeHolder.home_item_cNumber.setText((dailySelect.getCollectionNumber()+1)+"");
-                            collectionListener.onClickCollection(dailySelect, Constant.Collection.COLLECTION_TYPE_ADD,collection);
+                            homeHolder.home_item_cNumber.setText((ds.getCollectionNumber()+1)+"");
+                            //增加收藏的操作
+                            //collection = new ArrayList<>();
+                            collection.add(ds.getImageUrl()+"");
+                            SharedPreferencesUtils.getInstance(context).setDownloadList("collection",collection,false);
+                            ds.setCollectionNumber(ds.getCollectionNumber()+1);
+                            collectionImage(ds,Constant.Collection.COLLECTION_TYPE_ADD);
                         }else{
                             //不为空，判断是否包含此图片ID
-                            boolean isContains = false;
-                            for(DailySelect dailySelect1:collection){
-                                if(dailySelect1.getImageID()==dailySelect.getImageID()){
-                                    isContains = true;
-                                    break;
-                                }
-                            }
-                            if(!isContains){
-                                if(collection==null){
-                                    collection = new ArrayList<>();
-                                }
+                            if(!collection.contains(ds.getImageUrl()+"")){
                                 homeHolder.iv_collection.setImageResource(R.mipmap.collection);
-                                homeHolder.home_item_cNumber.setText((dailySelect.getCollectionNumber()+1)+"");
-                                collectionListener.onClickCollection(dailySelect, Constant.Collection.COLLECTION_TYPE_ADD,collection);
+                                homeHolder.home_item_cNumber.setText((ds.getCollectionNumber()+1)+"");
+                                collection.add(ds.getImageUrl()+"");
+                                SharedPreferencesUtils.getInstance(context).setDownloadList("collection",collection,false);
+                                ds.setCollectionNumber(ds.getCollectionNumber()+1);
+                                collectionImage(ds,Constant.Collection.COLLECTION_TYPE_ADD);
                             }else{
                                 Toast.makeText(context,"已经收藏过了！",Toast.LENGTH_SHORT).show();
                             }
@@ -156,12 +149,9 @@ public class HomeAdapter extends BaseAdapter {
         return view;
     }
 
-    public void refresh(List<DailySelect> listData,List<DailySelect> collection) {
-        if(this.collection!=null){
-            this.collection.clear();
-        }
+    public void refresh(List<DailySelect> listData,List<String> collection) {
         this.collection = collection;
-        mData.addAll(listData);
+        this.mData.addAll(listData);
         notifyDataSetChanged();
     }
 
@@ -170,12 +160,45 @@ public class HomeAdapter extends BaseAdapter {
         HomeHolder tag = (HomeHolder) childAt.getTag();
         tag.home_item_cNumber.setText(clickNumber+"");
         tag.iv_collection.setImageResource(R.mipmap.collection);
-
     }
 
-
-
-
+    /**
+     * 增，减收藏
+     * @param dailySelect 点击该图片的实体类
+     * @param collectionType  增加，减少标识
+     */
+    Handler mHandler = new Handler();
+    private void collectionImage(final DailySelect dailySelect, final int collectionType) {
+        new Thread(){
+          @Override
+           public void run() {
+                String collectionUrl = Constant.HttpConstants.collectionImage;
+                ArrayMap<String,String> am = new ArrayMap<>();
+                am.put(Constant.HttpConstants.imageID,dailySelect.getImageID()+"");
+                am.put(Constant.HttpConstants.type,collectionType+"");
+                XutilsHttp.xUtilsRequest(collectionUrl, am, new XutilsHttp.XUilsCallBack() {
+                    @Override
+                    public void onResponse(final String result) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Toast.makeText(context,"收藏结果信息："+result+"",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onFail(final String result) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Toast.makeText(context,"收藏失败",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+           }
+         }.start();
+    }
 
     class HomeHolder{
         @ViewInject(R.id.home_item_image)

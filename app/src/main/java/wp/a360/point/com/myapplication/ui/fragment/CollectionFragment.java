@@ -47,7 +47,7 @@ public class CollectionFragment extends BaseFragment {
     @ViewInject(R.id.download_top_image)
     private ImageView download_top_image;
 
-    private List<DailySelect> collection;
+    private ArrayMap<String,DailySelect> collection;
     private TypeDetailsAdapter tdAdapter;
     @Override
     public View bindView() {
@@ -70,7 +70,7 @@ public class CollectionFragment extends BaseFragment {
     protected void initData() {
         download_gridview.setFocusable(false);
         //查询已下载的图片
-        collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
+        collection = SharedPreferencesUtils.getInstance(mContext).getHashMapData("collection", DailySelect.class);
         if(collection==null){
             my_wallpaper_null.setVisibility(View.VISIBLE);
             my_wallpaper_content.setVisibility(View.GONE);
@@ -79,7 +79,9 @@ public class CollectionFragment extends BaseFragment {
             my_wallpaper_null.setVisibility(View.GONE);
             my_wallpaper_content.setVisibility(View.VISIBLE);
 
-            mData.addAll(collection);
+            for(DailySelect ds:collection.values()){
+                mData.add(ds);
+            }
             DailySelect dailySelect = mData.get(0);
             if(collection.size()>0){
                 download_type_size.setText(collection.size()+"张");

@@ -69,7 +69,7 @@ public class SortFragment extends BaseFragment {
     protected void initData() {
         sort_list.setFocusable(false);
         sort_myWallpaperName.setText(getResources().getString(R.string.sort_myWallpaperName));
-        List<DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
+        ArrayMap<String,DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getHashMapData("collection", DailySelect.class);
         List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
         if(collection!=null){
             if(downloadImage==null){
@@ -174,7 +174,7 @@ public class SortFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        List<DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
+        ArrayMap<String,DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getHashMapData("collection", DailySelect.class);
         List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
         if(collection!=null){
             if(downloadImage==null){

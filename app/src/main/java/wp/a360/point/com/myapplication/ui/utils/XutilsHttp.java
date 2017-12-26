@@ -5,6 +5,7 @@ import android.util.ArrayMap;
 import org.xutils.HttpManager;
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
+import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -117,6 +118,85 @@ public class XutilsHttp {
         });
 
 
+    }
+
+
+    /**
+     * 异步请求
+     * @param url 请求的url
+     * @param map 参数集合
+     * @param xCallBack  请求回调接口
+     */
+    public static void xUtilsRequest(String url, ArrayMap<String,String> map, final XUilsCallBack xCallBack){
+        RequestParams params = new RequestParams(url);
+        params.addQueryStringParameter("wd", "xUtils");
+        if (null != map && !map.isEmpty()){
+            for (Map.Entry<String,String> entry : map.entrySet()){
+                params.addBodyParameter(entry.getKey(),entry.getValue());
+            }
+        }
+        x.http().request(HttpMethod.POST, params, new Callback.CommonCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+                if (result != null) {
+                    xCallBack.onResponse(result);
+                }
+            }
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                if (ex instanceof HttpException) {
+                    // 网络错误
+                    HttpException httpEx = (HttpException) ex;
+                    int responseCode = httpEx.getCode();
+                    String responseMsg = httpEx.getMessage();
+                    String errorResult = httpEx.getResult();
+                    xCallBack.onFail(responseMsg);
+                } else {
+                    // 其他错误
+                    xCallBack.onFail(ex.getMessage().toString());
+                }
+            }
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+            @Override
+            public void onFinished() {
+            }
+        });
+
+
+        /**
+         * params, new Callback.CommonCallback<String>() {
+        @Override
+        public void onSuccess(String result) {
+        if (result != null) {
+        xCallBack.onResponse(result);
+        }
+        }
+        @Override
+        public void onError(Throwable ex, boolean isOnCallback) {
+        if (ex instanceof HttpException) {
+        // 网络错误
+        HttpException httpEx = (HttpException) ex;
+        int responseCode = httpEx.getCode();
+        String responseMsg = httpEx.getMessage();
+        String errorResult = httpEx.getResult();
+        xCallBack.onFail(responseMsg);
+        } else {
+        // 其他错误
+        xCallBack.onFail(ex.getMessage().toString());
+        }
+        }
+        @Override
+        public void onCancelled(CancelledException cex) {
+        }
+
+        @Override
+        public void onFinished() {
+        }
+        }
+         */
     }
 
 

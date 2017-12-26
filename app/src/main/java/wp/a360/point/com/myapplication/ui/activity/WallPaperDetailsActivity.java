@@ -54,7 +54,7 @@ public class WallPaperDetailsActivity extends BaseActivity {
     @ViewInject(R.id.circleProgressbar)
     private AVLoadingIndicatorView circleProgressBar;
     private DailySelect dailySelect;
-    private List<DailySelect> collection;
+    private List<String> collection;
     private WallpaperManager mWallManager;
     private boolean isWallpaper = false;
     private String imageUrl;
@@ -107,7 +107,7 @@ public class WallPaperDetailsActivity extends BaseActivity {
     public void doBusiness(final Context mContext) {
         wallpaper_loding.setVisibility(View.VISIBLE);
         circleProgressBar.setVisibility(View.VISIBLE);
-        collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
+        collection = SharedPreferencesUtils.getInstance(mContext).getDownloadList("collection", String.class);
 
         dailySelect = (DailySelect) getIntent().getSerializableExtra("dailySelect");
         isCollection = getIntent().getIntExtra("isCollection", 0);
@@ -126,14 +126,7 @@ public class WallPaperDetailsActivity extends BaseActivity {
 
         }else{
             if(collection!=null){
-                boolean isContains = false;
-                for(DailySelect dailySelect1:collection){
-                    if(dailySelect1.getImageID()==dailySelect.getImageID()){
-                        isContains = true;
-                        break;
-                    }
-                }
-                if(isContains){
+                if(collection.contains(dailySelect.getImageUrl()+"")){
                     collection_unselect.setImageDrawable(getResources().getDrawable(R.mipmap.collection_slecet));
                 }else{
                     collection_unselect.setImageDrawable(getResources().getDrawable(R.mipmap.collection_unselect));
@@ -253,8 +246,8 @@ public class WallPaperDetailsActivity extends BaseActivity {
                         collection_unselect.setImageDrawable(getResources().getDrawable(R.mipmap.collection_slecet));
                         collection = new ArrayList<>();
                         dailySelect.setCollectionNumber(dailySelect.getCollectionNumber()+1);
-                        collection.add(dailySelect);
-                        SharedPreferencesUtils.getInstance(mContext).setDataList("collection",collection);
+                        collection.add(dailySelect.getImageUrl()+"");
+                        SharedPreferencesUtils.getInstance(mContext).setDownloadList("collection",collection,false);
                         upCollection(dailySelect,Constant.Collection.COLLECTION_TYPE_ADD);
                         //发送广播更新主界面的信息
                         Intent mIntent = new Intent(Constant.COLLECTION_ACTION);
@@ -262,22 +255,15 @@ public class WallPaperDetailsActivity extends BaseActivity {
                         mIntent.putExtra("clickNumber",(dailySelect.getCollectionNumber()));
                         LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
                     }else{
-                        boolean isContains = false;
-                        for(DailySelect dailySelect1:collection){
-                            if(dailySelect1.getImageID()==dailySelect.getImageID()){
-                                isContains = true;
-                                break;
-                            }
-                        }
-                        if(isContains){
+                        if(collection.contains(dailySelect.getImageID()+"")){
                             showToast("你已经添加过收藏了！");
                         }else{
                             //添加收藏
                             collection_unselect.setImageDrawable(getResources().getDrawable(R.mipmap.collection_slecet));
                             collection_unselect.setImageDrawable(getResources().getDrawable(R.mipmap.collection_slecet));
                             dailySelect.setCollectionNumber(dailySelect.getCollectionNumber()+1);
-                            collection.add(dailySelect);
-                            SharedPreferencesUtils.getInstance(mContext).setDataList("collection",collection);
+                            collection.add(dailySelect.getImageUrl()+"");
+                            SharedPreferencesUtils.getInstance(mContext).setDownloadList("collection",collection,false);
                             upCollection(dailySelect,Constant.Collection.COLLECTION_TYPE_ADD);
                             //发送广播更新主界面的信息
                             Intent mIntent = new Intent(Constant.COLLECTION_ACTION);

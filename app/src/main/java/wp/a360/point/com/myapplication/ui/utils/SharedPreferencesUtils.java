@@ -208,7 +208,7 @@ public class SharedPreferencesUtils {
      * @param tag
      * @param datalist
      */
-    public  <T> boolean setDataList(String tag, List<T> datalist) {
+   /* public  <T> boolean setDataList(String tag, List<T> datalist) {
         try{
             if (null == datalist || datalist.size() <= 0)
                 return false;
@@ -224,14 +224,14 @@ public class SharedPreferencesUtils {
             ex.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     /**
      * 获取List
      * @param tag
      * @return
      */
-    public  <T>List<T> getDataList(String tag,Class<T> cls) {
+   /* public  <T>List<T> getDataList(String tag,Class<T> cls) {
         try{
             List<T> mList=new ArrayList<>();
             Gson mGson = new Gson();
@@ -246,7 +246,7 @@ public class SharedPreferencesUtils {
             ex.printStackTrace();
             return null;
         }
-    }
+    }*/
 
 
    /*

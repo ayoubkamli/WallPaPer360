@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -84,13 +85,13 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int posiotion, long l) {
                                     Intent intent = new Intent(mContext,WallPaperDetailsActivity.class);
+                                    List<String> collection = SharedPreferencesUtils.getInstance(mContext).getDownloadList("collection", String.class);
                                     DailySelect dailySelect = mData.get(posiotion);
                                     intent.putExtra("dailySelect",dailySelect);
                                     intent.putExtra("posiotion",posiotion);
                                     startActivity(intent);
                                 }
                             });
-                            initCollection(homeAdapter);
                         }else{
                             isLoadOK=true;
                         }
@@ -115,67 +116,6 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
             }
         }
     };
-
-    private void initCollection(HomeAdapter homeAdapter) {
-        /**点击收藏按钮事件的监听*/
-        homeAdapter.setCollectionListener(new HomeAdapter.OnCollectionListener() {
-            @Override
-            public void onClickCollection(DailySelect dailySelect,int collectionType,List<DailySelect> collection) {
-                try{
-                    if(collection==null){collection = new ArrayList<>();}
-                    if(collectionType==Constant.Collection.COLLECTION_TYPE_ADD){ //为空，说明点击的图片没有收藏过 DailySelect
-                        //增加收藏的操作
-                        dailySelect.setCollectionNumber(dailySelect.getCollectionNumber()+1);
-                        collection.add(dailySelect);
-                        SharedPreferencesUtils.getInstance(mContext).setDataList("collection",collection);
-                        collectionImage(dailySelect,Constant.Collection.COLLECTION_TYPE_ADD);
-                    }
-                }catch (Exception ex){
-                    showToast("收藏失败！");
-                    showLog("收藏异常信息："+ex.getMessage().toString());
-                    ex.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * 增，减收藏
-     * @param dailySelect 点击该图片的实体类
-     * @param collectionType  增加，减少标识
-     */
-    private void collectionImage(final DailySelect dailySelect, final int collectionType) {
-        new Thread(){
-            @Override
-            public void run() {
-                String collectionUrl = Constant.HttpConstants.collectionImage;
-                ArrayMap<String,String> am = new ArrayMap<>();
-                am.put(Constant.HttpConstants.imageID,dailySelect.getImageID()+"");
-                am.put(Constant.HttpConstants.type,collectionType+"");
-                XutilsHttp.xUtilsPost(collectionUrl, am, new XutilsHttp.XUilsCallBack() {
-                    @Override
-                    public void onResponse(final String result) {
-                        mHadnler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                showLog("收藏结果信息："+result+"");
-                            }
-                        });
-                    }
-                    @Override
-                    public void onFail(final String result) {
-                        mHadnler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                showToast("收藏失败");
-                                showLog("收藏失败信息："+result.toString());
-                            }
-                        });
-                    }
-                });
-            }
-        }.start();
-    }
 
     @Override
     public View bindView() {
@@ -322,7 +262,7 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
      * 加载更多数据
      */
     private void loadData() {
-        final List<DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getDataList("collection", DailySelect.class);
+        final List<String> collection = SharedPreferencesUtils.getInstance(mContext).getDownloadList("collection", String.class);
         String url = Constant.HttpConstants.getHomeData;
         ArrayMap<String,String> arrayMap = new ArrayMap<>();
         arrayMap.put(Constant.HttpConstants.pageNum,start+"");
