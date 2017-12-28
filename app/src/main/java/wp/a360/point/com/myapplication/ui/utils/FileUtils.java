@@ -205,7 +205,7 @@ public class FileUtils {
         try {
             String defaultDirectory = getDefaultDirectory(null);
             String fileName = getFileName(imageUrl);
-            File file = new File(defaultDirectory + fileName);
+            File file = new File(defaultDirectory +File.separator+ fileName);
             if (file.exists()) {
                 file.delete();
                 return true;

@@ -13,12 +13,12 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
-import com.andview.refreshview.XRefreshView;
 import com.flyco.animation.BaseAnimatorSet;
 import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.flyco.animation.SlideExit.SlideBottomExit;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.MaterialDialog;
+import com.wp.point.qj.jb.R;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.SettingService;
@@ -28,7 +28,6 @@ import org.xutils.x;
 
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
 import wp.a360.point.com.myapplication.ui.base.BaseActivity;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 

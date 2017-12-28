@@ -4,15 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,7 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.adapter.MenuAdapter;
 import wp.a360.point.com.myapplication.ui.base.MenuFragmentActivity;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
@@ -269,8 +265,6 @@ public class MainActivity extends MenuFragmentActivity {
                 },1000);
             }
         });
-
-
     }
 
     @Override
@@ -287,6 +281,7 @@ public class MainActivity extends MenuFragmentActivity {
                 }
                 showToast("再按一次退出程序");
             } else {
+                HomeFragment.start = 0;
                 finish();
             }
             return true;

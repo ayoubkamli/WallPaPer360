@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">全境戒备</string>
+    <string name="app_name">全境戒备(主题)</string>
+    <!--获取网络数据请求的APP名称-->
+    <string name="intener_name">全境戒备</string>
     <string name="menu_brief">抓住美的瞬间</string>
     <string name="home_topName">每日精选</string>
     <string name="search_hint">搜索你想要的壁纸</string>
     <string name="sort_myWallpaperName">我的壁纸</string>
-
-
 </resources>

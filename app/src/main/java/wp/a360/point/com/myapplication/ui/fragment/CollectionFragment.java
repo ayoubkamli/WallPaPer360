@@ -15,14 +15,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.activity.WallPaperDetailsActivity;
 import wp.a360.point.com.myapplication.ui.adapter.MyColllectionDetailsAdapter;
-import wp.a360.point.com.myapplication.ui.adapter.TypeDetailsAdapter;
 import wp.a360.point.com.myapplication.ui.base.BaseFragment;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
 import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
@@ -80,7 +78,6 @@ public class CollectionFragment extends BaseFragment {
         }else{
             my_wallpaper_null.setVisibility(View.GONE);
             my_wallpaper_content.setVisibility(View.VISIBLE);
-
             for(DailySelect ds:collection.values()){
                 mData.add(ds);
             }
@@ -106,6 +103,7 @@ public class CollectionFragment extends BaseFragment {
                         Intent intent = new Intent(mContext,WallPaperDetailsActivity.class);
                         DailySelect dailySelect = mData.get(0);
                         intent.putExtra("dailySelect",dailySelect);
+                        intent.putExtra("isCollection",1);
                         startActivity(intent);
                     }
                 });

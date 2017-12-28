@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="wp.a360.point.com.myapplication">
+    package="com.wp.point.qj.jb">
 
     <!--联网权限-->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -28,7 +28,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".ui.activity.MyAppLication"
+        android:name="wp.a360.point.com.myapplication.ui.activity.MyAppLication"
         android:theme="@style/AppTheme">
         <activity android:name="wp.a360.point.com.myapplication.ui.activity.GuideActivity">
             <intent-filter>
@@ -40,11 +40,11 @@
 
         <meta-data
         android:name="BaiduMobAd_STAT_ID"
-        android:value="e2d857d093"/>  
+        android:value="ab70c40c5c"/>  
 
         <meta-data
         android:name="BaiduMobAd_CHANNEL"
-        android:value="baidu" />
+        android:value="huawei" />
 
         <meta-data
         android:name="BaiduMobAd_EXCEPTION_LOG"

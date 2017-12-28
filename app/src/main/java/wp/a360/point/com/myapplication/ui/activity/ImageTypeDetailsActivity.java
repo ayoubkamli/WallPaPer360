@@ -25,8 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
-import wp.a360.point.com.myapplication.ui.adapter.HomeAdapter;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.adapter.TypeDetailsAdapter;
 import wp.a360.point.com.myapplication.ui.base.BaseActivity;
 import wp.a360.point.com.myapplication.ui.constant.Constant;

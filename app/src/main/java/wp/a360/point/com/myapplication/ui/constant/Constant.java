@@ -67,6 +67,7 @@ public class Constant {
         public static final String imageLabel = "imageLabel"; //参数 标签
         public static final String imageID = "imageID"; //参数 图片ID
         public static final String type = "type"; //参数 1：标识收藏  2：标识取消收藏
+        public static final  String appName = "appName";
         /**
          * 获取首页数据集合接口
          * */

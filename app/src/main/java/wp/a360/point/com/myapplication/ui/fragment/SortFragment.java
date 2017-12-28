@@ -1,14 +1,10 @@
 package wp.a360.point.com.myapplication.ui.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.util.ArrayMap;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -23,7 +19,7 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.activity.ImageTypeDetailsActivity;
 import wp.a360.point.com.myapplication.ui.activity.MyWallpaperActivity;
 import wp.a360.point.com.myapplication.ui.adapter.SortAdapter;

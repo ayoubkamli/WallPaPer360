@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.ArrayMap;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -14,7 +13,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -22,7 +20,7 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.activity.WallPaperDetailsActivity;
 import wp.a360.point.com.myapplication.ui.adapter.TypeDetailsAdapter;
 import wp.a360.point.com.myapplication.ui.base.BaseFragment;
@@ -84,70 +82,63 @@ public class DownloadWallpaperFragment extends BaseFragment {
         intentFilter.addAction(Constant.DOWNLOAD_ACTION);
         downloadBoradCast = new DownloadBoradCastReceiver();
         instance.registerReceiver(downloadBoradCast,intentFilter);
-
-        List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
-        setData(downloadImage);
-
-
-    }
-    DailySelect clickSelect = null;
-    private void setData(List<DailySelect> downloadImage) {
         download_top_name.setText("已下载");
-        if(downloadImage ==null){
+        List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
+        if(downloadImage!=null&&downloadImage.size()>0){
+            setData(downloadImage);
+        }else{
             my_wallpaper_null.setVisibility(View.VISIBLE);
             my_wallpaper_content.setVisibility(View.GONE);
             my_wallpaper_error.setText("暂无任何下载的壁纸");
-            return;
-        }else {
-            my_wallpaper_null.setVisibility(View.GONE);
-            my_wallpaper_content.setVisibility(View.VISIBLE);
-            //mData.addAll(downloadImage);
-            clickSelect = downloadImage.get(0);
-            if (downloadImage.size() > 0) {
-                download_type_size.setText(downloadImage.size() + "张");
-                Glide.with(mContext)
-                        .load(clickSelect.getImageUrl())
-                        //设置加载中图片
-                        .placeholder(R.mipmap.lodinging) // can also be a drawable
-                        //加载失败图片
-                        .error(R.mipmap.lodinging)
-                        //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
-                        //.diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .thumbnail(1f) //设置缩略图支持
-                        .fitCenter()
-                        .into(download_top_image);
-                for (int i = 0; i < downloadImage.size(); i++) {
-                    if (downloadImage.get(i).getImageID() != clickSelect.getImageID()) {
-                        mData1.add(downloadImage.get(i));
-                    }
-                }
-                if (tdAdapter == null) {
-                    tdAdapter = new TypeDetailsAdapter(mContext, mData1);
-                }
-                download_gridview.setAdapter(tdAdapter);
-                download_top_image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
-                        intent.putExtra("dailySelect", clickSelect);
-                        intent.putExtra("isCollection",2);
-                        startActivity(intent);
-                    }
-                });
-                download_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
-                        DailySelect dailySelect = mData1.get(i);
-                        intent.putExtra("dailySelect", dailySelect);
-                        intent.putExtra("isCollection",2);
-                        startActivity(intent);
-                    }
-                });
-
-            }
-
         }
+    }
+
+    DailySelect clickSelect = null;
+
+    private void setData(List<DailySelect> downloadImage) {
+        clickSelect = downloadImage.get(0);
+        download_type_size.setText(downloadImage.size() + "张");
+        Glide.with(mContext)
+                .load(clickSelect.getImageUrl())
+                //设置加载中图片
+                .placeholder(R.mipmap.lodinging) // can also be a drawable
+                //加载失败图片
+                .error(R.mipmap.lodinging)
+                //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
+                //.diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .thumbnail(1f) //设置缩略图支持
+                .fitCenter()
+                .into(download_top_image);
+        for (int i = 0; i < downloadImage.size(); i++) {
+            if (downloadImage.get(i).getImageID() != clickSelect.getImageID()) {
+                mData1.add(downloadImage.get(i));
+            }
+        }
+        if (tdAdapter == null) {
+            tdAdapter = new TypeDetailsAdapter(mContext, mData1);
+        }
+        download_gridview.setAdapter(tdAdapter);
+        download_top_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
+                intent.putExtra("dailySelect", clickSelect);
+                intent.putExtra("isCollection", 2);
+                startActivity(intent);
+            }
+        });
+        download_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
+                DailySelect dailySelect = mData1.get(i);
+                intent.putExtra("dailySelect", dailySelect);
+                intent.putExtra("isCollection", 2);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override

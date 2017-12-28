@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.Locale;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 
 /**
  * Created by DN on 2017/7/25.

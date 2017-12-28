@@ -17,11 +17,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.widget.SystemBarTintManager;
 

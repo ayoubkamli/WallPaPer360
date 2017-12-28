@@ -2,16 +2,10 @@ package wp.a360.point.com.myapplication.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.text.InputType;
-import android.util.ArrayMap;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,13 +19,10 @@ import org.xutils.x;
 
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
-import wp.a360.point.com.myapplication.ui.activity.ImageTypeDetailsActivity;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.activity.SearchResultActivity;
 import wp.a360.point.com.myapplication.ui.base.BaseFragment;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
-import wp.a360.point.com.myapplication.ui.entity.DailySelect;
-import wp.a360.point.com.myapplication.ui.entity.FindDimImageMode;
 import wp.a360.point.com.myapplication.ui.entity.KeyWord;
 import wp.a360.point.com.myapplication.ui.utils.RandomUtils;
 import wp.a360.point.com.myapplication.ui.utils.XutilsHttp;

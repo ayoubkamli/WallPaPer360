@@ -22,7 +22,7 @@ import org.xutils.x;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.base.BaseActivity;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
@@ -352,6 +352,10 @@ public class WallPaperDetailsActivity extends BaseActivity {
                         showToast("下载失败,请稍后再试！");
                     }
                     if(isCollection==1){
+                        //广播通知下载界面更新
+                        Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
+                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
+                    }else if(isCollection==2){
                         //广播通知下载界面更新
                         Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
                         LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);

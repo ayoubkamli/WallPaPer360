@@ -11,7 +11,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 
 
 /**

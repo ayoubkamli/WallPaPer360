@@ -4,19 +4,56 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
     defaultConfig {
-        applicationId "wp.a360.point.com.myapplication"
+        applicationId "com.wp.point.qj.jb"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // dex突破65535的限制
+        multiDexEnabled true
+        // 默认是baidu的渠道
+        manifestPlaceholders = [BaiduMobAd_CHANNEL: "baidu"]
     }
     buildTypes {
         release {
             minifyEnabled false
+            // 移除无用的resource文件
+            //shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 自定义输出配置
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为wooyun_v1.0_wandoujia.apk
+                        def fileName = "quanjingjiebei_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+
         }
     }
+
+
+    /*多渠道打包配置*/
+    productFlavors {
+        vivo {}
+        xiaomi {}
+        n360 {}
+        baidu {}
+        wandoujia {}
+        yingyongbao{}
+        other{}
+        huawei{}
+    }
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [Pack_CHANNEL: name]
+    }
+
+
 }
 
 dependencies {

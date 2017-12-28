@@ -11,9 +11,7 @@ import android.widget.TextView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.List;
-
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 
 /**
  * Created by DN on 2017/12/5.

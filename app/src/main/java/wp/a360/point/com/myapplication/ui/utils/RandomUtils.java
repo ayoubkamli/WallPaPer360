@@ -2,7 +2,7 @@ package wp.a360.point.com.myapplication.ui.utils;
 
 import java.util.Random;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 
 /**
  * 随机生成工具

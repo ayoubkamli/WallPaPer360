@@ -14,19 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
-import wp.a360.point.com.myapplication.ui.utils.LogUtils;
 import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
 import wp.a360.point.com.myapplication.ui.utils.XutilsHttp;
 import wp.a360.point.com.myapplication.ui.view.MyListView;
@@ -47,7 +44,6 @@ public class HomeAdapter extends BaseAdapter {
         this.collection = SharedPreferencesUtils.getInstance(context).getHashMapData("collection", DailySelect.class);
         layoutInflater = LayoutInflater.from(context);
     }
-
     @Override
     public int getCount() {
         return mData.size();
@@ -102,8 +98,9 @@ public class HomeAdapter extends BaseAdapter {
                         //加载失败图片
                         .error(R.mipmap.lodinging)
                         //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源,SOURCE：缓存原始数据
-                        //.diskCacheStrategy(DiskCacheStrategy.RESULT)
-                        .thumbnail(1f) //设置缩略图支持
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .thumbnail(0.5f) //设置缩略图支持
+                        .override(960,480)
                         .fitCenter()
                         .into(homeHolder.home_item_image);
             }

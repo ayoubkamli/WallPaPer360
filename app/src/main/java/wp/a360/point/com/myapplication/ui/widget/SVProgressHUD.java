@@ -15,7 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 
 
 /**

@@ -4,7 +4,7 @@ package wp.a360.point.com.myapplication.ui.widget;
 
 import android.view.Gravity;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 
 
 /**

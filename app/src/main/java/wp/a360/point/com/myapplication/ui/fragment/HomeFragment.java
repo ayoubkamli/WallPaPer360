@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.ArrayMap;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -22,13 +21,12 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.activity.WallPaperDetailsActivity;
 import wp.a360.point.com.myapplication.ui.adapter.HomeAdapter;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
 import wp.a360.point.com.myapplication.ui.base.BaseFragment;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
-import wp.a360.point.com.myapplication.ui.utils.FileUtils;
 import wp.a360.point.com.myapplication.ui.utils.NetworkUtils;
 import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
 import wp.a360.point.com.myapplication.ui.utils.XutilsHttp;
@@ -50,14 +48,13 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
     public static long lastRefreshTime;//刷新的时间
     public static int start = 0; //分页，从0页开始拿
     public int num = 8; //每页拿8条数据
+    public int type = 1; //区分请求数据是否是本应用数据
     private boolean isLoadOK;//false ：还有数据，true :没有数据
     private HomeAdapter homeAdapter;
     private List<DailySelect> mData =new ArrayList<>();
     private SlidemenuClickListener onSlidemenuListener;
     private CollectionBoradCastReceiver collectionBoradCast;
     private LocalBroadcastManager instance;
-
-
 
     private Handler mHadnler = new Handler(){
         @Override
@@ -67,12 +64,13 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                     try{
                         String str = (String)msg.obj;
                         Gson gson = new Gson();
-                        TypeToken<List<DailySelect>> type = new TypeToken<List<DailySelect>>() {};
-                        mData = gson.fromJson(str, type.getType());
+                        TypeToken<List<DailySelect>> listTypeToken = new TypeToken<List<DailySelect>>() {};
+                        mData = gson.fromJson(str, listTypeToken.getType());
                         if(mData!=null){
                             if(mData.size()<num){
                                 //如果第一次请求的数据小于num,表示已经没有数据了。
                                 isLoadOK = true;
+                                type = 2;
                             }
                             start = start+mData.size();//不为空，记录加一页数据
                            if(homeAdapter==null){homeAdapter = new HomeAdapter(mContext,mData);}
@@ -211,6 +209,8 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
         final ArrayMap<String, String> arrayMap = new ArrayMap<>();
         arrayMap.put(Constant.HttpConstants.pageNum, start + "");
         arrayMap.put(Constant.HttpConstants.pageSize, num + "");
+        arrayMap.put(Constant.HttpConstants.pageType, type + "");
+        arrayMap.put(Constant.HttpConstants.appName,mContext.getResources().getString(R.string.intener_name)+"");
         try{
             new Thread(){
                 @Override
@@ -263,6 +263,8 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
         ArrayMap<String,String> arrayMap = new ArrayMap<>();
         arrayMap.put(Constant.HttpConstants.pageNum,start+"");
         arrayMap.put(Constant.HttpConstants.pageSize,num+"");
+        arrayMap.put(Constant.HttpConstants.pageType,type+"");
+        arrayMap.put(Constant.HttpConstants.appName,mContext.getResources().getString(R.string.intener_name)+"");
         XutilsHttp.xUtilsPost(url, arrayMap, new XutilsHttp.XUilsCallBack() {
             @Override
             public void onResponse(String result) {
@@ -270,13 +272,16 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                     if (result != null) {
                         //请求成功时的回调
                         Gson gson = new Gson();
-                        TypeToken<List<DailySelect>> type = new TypeToken<List<DailySelect>>() {
+                        TypeToken<List<DailySelect>> listTypeToken = new TypeToken<List<DailySelect>>() {
                         };
-                        final List<DailySelect> listData = gson.fromJson(result, type.getType());
+                        final List<DailySelect> listData = gson.fromJson(result, listTypeToken.getType());
                         home_list.post(new Runnable() {
                             @Override
                             public void run() {
                                 if(listData!=null){
+                                    if(listData.size()<num){
+                                        type = 2;
+                                    }
                                     start = start+listData.size();
                                     if(homeAdapter==null){
                                         homeAdapter = new HomeAdapter(mContext,mData);

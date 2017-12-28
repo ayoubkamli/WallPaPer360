@@ -15,7 +15,7 @@ import org.xutils.x;
 
 import java.util.List;
 
-import wp.a360.point.com.myapplication.R;
+import com.wp.point.qj.jb.R;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
 
 /**
@@ -76,8 +76,9 @@ public class TypeDetailsAdapter extends BaseAdapter {
                             //加载失败图片
                             .error(R.mipmap.lodinging)
                             //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
                             .thumbnail(1f) //设置缩略图支持
+                            .override(960,480)
                             .centerCrop()
                             .into(tdHolder.type_details_item_image);
                 }catch (Exception ex){
