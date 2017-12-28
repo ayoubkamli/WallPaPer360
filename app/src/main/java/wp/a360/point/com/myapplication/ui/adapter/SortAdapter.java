@@ -76,9 +76,9 @@ public class SortAdapter extends BaseAdapter {
                                 .placeholder(R.mipmap.lodinging) // can also be a drawable
                                 //加载失败图片
                                 .error(R.mipmap.lodinging)
-                                //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .thumbnail(0.1f) //设置缩略图支持
+                                //SOURCE:缓存源资源  result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
+                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                .thumbnail(1f) //设置缩略图支持
                                 .fitCenter()
                                 .into(sortHolder.sort_background);
                 }

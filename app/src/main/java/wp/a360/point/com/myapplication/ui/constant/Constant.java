@@ -13,7 +13,7 @@ public class Constant {
     //目录
     public static final String[] SETTINGS = {"清理缓存","退出应用"};
     //链接服务器获取数据的开关
-    public static final  boolean isInter = false;
+    public static final  boolean isInter = true;
     /**
      * 是否关闭吐司
      * true :打开，false:关闭
@@ -57,7 +57,7 @@ public class Constant {
 
     /**网络请求地址*/
     public static class HttpConstants{
-        private static final String URL_WEB_ZS = "http://120.24.75.75/GameAnswer";// 正式Ui
+        private static final String URL_WEB_ZS = "http://120.24.152.185/WallPaper";// 正式Ui
         private static final String URL_WEB_NW_W = "http://192.168.0.127:8088/WallPaper"; // 本地服务器接口
         private static final String URL_Web = isInter ? URL_WEB_ZS: URL_WEB_NW_W;
         public static final String pageNum = "start";//参数 分页:从第几条开始拿
@@ -67,7 +67,6 @@ public class Constant {
         public static final String imageLabel = "imageLabel"; //参数 标签
         public static final String imageID = "imageID"; //参数 图片ID
         public static final String type = "type"; //参数 1：标识收藏  2：标识取消收藏
-
         /**
          * 获取首页数据集合接口
          * */

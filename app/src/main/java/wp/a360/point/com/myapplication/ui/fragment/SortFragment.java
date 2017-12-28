@@ -69,7 +69,7 @@ public class SortFragment extends BaseFragment {
     protected void initData() {
         sort_list.setFocusable(false);
         sort_myWallpaperName.setText(getResources().getString(R.string.sort_myWallpaperName));
-        ArrayMap<String,DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getHashMapData("collection", DailySelect.class);
+        List<String> collection = SharedPreferencesUtils.getInstance(mContext).getDownloadList("collection", String.class);
         List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
         if(collection!=null){
             if(downloadImage==null){

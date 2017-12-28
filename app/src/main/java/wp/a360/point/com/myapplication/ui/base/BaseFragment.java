@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.baidu.mobstat.StatService;
+
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 
 
@@ -109,15 +111,13 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        //StatService.onResume(mContext);
-        //StatService.onPageStart(mContext, "BaseFragment");
+        StatService.onPageStart(mContext, "BaseFragment");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        // StatService.onPause(mContext);
-        //StatService.onPageEnd(mContext, "BaseFragment");
+        StatService.onPageEnd(mContext, "BaseFragment");
     }
     @Override
     public void onDestroy() {

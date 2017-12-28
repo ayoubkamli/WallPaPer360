@@ -10,7 +10,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,21 +18,17 @@ import com.andview.refreshview.XRefreshView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.xutils.common.Callback;
-import org.xutils.ex.HttpException;
-import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import wp.a360.point.com.myapplication.R;
 import wp.a360.point.com.myapplication.ui.activity.WallPaperDetailsActivity;
 import wp.a360.point.com.myapplication.ui.adapter.HomeAdapter;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
 import wp.a360.point.com.myapplication.ui.base.BaseFragment;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
+import wp.a360.point.com.myapplication.ui.utils.FileUtils;
 import wp.a360.point.com.myapplication.ui.utils.NetworkUtils;
 import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
 import wp.a360.point.com.myapplication.ui.utils.XutilsHttp;
@@ -63,6 +58,7 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
     private LocalBroadcastManager instance;
 
 
+
     private Handler mHadnler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -85,11 +81,11 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int posiotion, long l) {
                                     Intent intent = new Intent(mContext,WallPaperDetailsActivity.class);
-                                    List<String> collection = SharedPreferencesUtils.getInstance(mContext).getDownloadList("collection", String.class);
                                     DailySelect dailySelect = mData.get(posiotion);
                                     intent.putExtra("dailySelect",dailySelect);
                                     intent.putExtra("posiotion",posiotion);
                                     startActivity(intent);
+
                                 }
                             });
                         }else{
@@ -262,7 +258,7 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
      * 加载更多数据
      */
     private void loadData() {
-        final List<String> collection = SharedPreferencesUtils.getInstance(mContext).getDownloadList("collection", String.class);
+        final ArrayMap<String,DailySelect> collection = SharedPreferencesUtils.getInstance(mContext).getHashMapData("collection", DailySelect.class);
         String url = Constant.HttpConstants.getHomeData;
         ArrayMap<String,String> arrayMap = new ArrayMap<>();
         arrayMap.put(Constant.HttpConstants.pageNum,start+"");
@@ -306,7 +302,6 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFail(String result) {
                 //请求错误时的回调
@@ -316,15 +311,11 @@ public class HomeFragment extends BaseFragment implements XRefreshView.XRefreshV
                 mHadnler.sendMessage(msg);
             }
         });
-
     }
-
     @Override
     public void onResume() {
         super.onResume();
-
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

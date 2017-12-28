@@ -44,8 +44,6 @@ import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
 import wp.a360.point.com.myapplication.ui.widget.SVProgressHUD;
 
 public class MainActivity extends MenuFragmentActivity {
-
-
     @ViewInject(R.id.tab0)
     private ImageView tab0;
     @ViewInject(R.id.tab1)

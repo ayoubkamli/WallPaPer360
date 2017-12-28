@@ -22,11 +22,11 @@ import wp.a360.point.com.myapplication.ui.entity.DailySelect;
  * Created by DN on 2017/12/9.
  */
 
-public class TypeDetailsAdapter extends BaseAdapter {
+public class MyColllectionDetailsAdapter extends BaseAdapter {
     private Context context;
     private List<DailySelect> mData;
     private LayoutInflater inflater;
-    public TypeDetailsAdapter(Context context, List<DailySelect> mData){
+    public MyColllectionDetailsAdapter(Context context, List<DailySelect> mData){
         this.context = context;
         this.mData = mData;
         inflater = LayoutInflater.from(context);
@@ -45,14 +45,6 @@ public class TypeDetailsAdapter extends BaseAdapter {
     @Override
     public long getItemId(int i) {
         return i;
-    }
-
-    public void cleanRefresh(List<DailySelect> mData1){
-        if(mData!=null){
-            mData.clear();
-        }
-        this.mData = mData1;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -85,10 +77,6 @@ public class TypeDetailsAdapter extends BaseAdapter {
                 }
         }
         return view;
-    }
-    public void refresh(List<DailySelect> listData) {
-        mData.addAll(listData);
-        notifyDataSetChanged();
     }
 
     class TypeDetailsHolder{

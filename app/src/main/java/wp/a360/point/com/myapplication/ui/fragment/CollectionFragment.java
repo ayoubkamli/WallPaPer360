@@ -10,6 +10,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import wp.a360.point.com.myapplication.R;
 import wp.a360.point.com.myapplication.ui.activity.WallPaperDetailsActivity;
+import wp.a360.point.com.myapplication.ui.adapter.MyColllectionDetailsAdapter;
 import wp.a360.point.com.myapplication.ui.adapter.TypeDetailsAdapter;
 import wp.a360.point.com.myapplication.ui.base.BaseFragment;
 import wp.a360.point.com.myapplication.ui.entity.DailySelect;
@@ -48,7 +50,7 @@ public class CollectionFragment extends BaseFragment {
     private ImageView download_top_image;
 
     private ArrayMap<String,DailySelect> collection;
-    private TypeDetailsAdapter tdAdapter;
+    private MyColllectionDetailsAdapter tdAdapter;
     @Override
     public View bindView() {
         return null;
@@ -64,7 +66,7 @@ public class CollectionFragment extends BaseFragment {
         x.view().inject(this,mContextView);
     }
 
-    List<DailySelect> mData = new ArrayList();
+    List<DailySelect> mData = new ArrayList<>();
     List<DailySelect> mData1 = new ArrayList();
     @Override
     protected void initData() {
@@ -82,19 +84,19 @@ public class CollectionFragment extends BaseFragment {
             for(DailySelect ds:collection.values()){
                 mData.add(ds);
             }
-            DailySelect dailySelect = mData.get(0);
+            DailySelect dsImage = mData.get(0);
             if(collection.size()>0){
                 download_type_size.setText(collection.size()+"张");
                 download_top_name.setText("已收藏");
                 //download_top_image
                 Glide.with(mContext)
-                        .load(dailySelect.getImageUrl())
+                        .load(dsImage.getImageUrl())
                         //设置加载中图片
                         .placeholder(R.mipmap.lodinging) // can also be a drawable
                         //加载失败图片
                         .error(R.mipmap.lodinging)
                         //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
-                        //.diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .thumbnail(1f) //设置缩略图支持
                         .fitCenter()
                         .into(download_top_image);
@@ -109,12 +111,12 @@ public class CollectionFragment extends BaseFragment {
                 });
             }
             for(int i = 0;i<mData.size();i++){
-                if(mData.get(i).getImageID()!=dailySelect.getImageID()){
+                if(mData.get(i).getImageID()!=dsImage.getImageID()){
                     mData1.add(mData.get(i));
                 }
             }
             if(tdAdapter==null){
-                tdAdapter = new TypeDetailsAdapter(mContext,mData1);
+                tdAdapter = new MyColllectionDetailsAdapter(mContext,mData1);
             }
             download_gridview.setAdapter(tdAdapter);
             download_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

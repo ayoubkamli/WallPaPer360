@@ -136,7 +136,6 @@ public class XutilsHttp {
             }
         }
         x.http().request(HttpMethod.POST, params, new Callback.CommonCallback<String>() {
-
             @Override
             public void onSuccess(String result) {
                 if (result != null) {
@@ -164,43 +163,6 @@ public class XutilsHttp {
             public void onFinished() {
             }
         });
-
-
-        /**
-         * params, new Callback.CommonCallback<String>() {
-        @Override
-        public void onSuccess(String result) {
-        if (result != null) {
-        xCallBack.onResponse(result);
-        }
-        }
-        @Override
-        public void onError(Throwable ex, boolean isOnCallback) {
-        if (ex instanceof HttpException) {
-        // 网络错误
-        HttpException httpEx = (HttpException) ex;
-        int responseCode = httpEx.getCode();
-        String responseMsg = httpEx.getMessage();
-        String errorResult = httpEx.getResult();
-        xCallBack.onFail(responseMsg);
-        } else {
-        // 其他错误
-        xCallBack.onFail(ex.getMessage().toString());
-        }
-        }
-        @Override
-        public void onCancelled(CancelledException cex) {
-        }
-
-        @Override
-        public void onFinished() {
-        }
-        }
-         */
     }
-
-
-
-
 
 }

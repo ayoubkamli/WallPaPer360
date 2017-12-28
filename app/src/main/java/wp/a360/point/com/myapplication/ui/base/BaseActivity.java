@@ -15,6 +15,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.baidu.mobstat.StatService;
+
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.widget.SystemBarTintManager;
 
@@ -67,13 +69,9 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
         if (!isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-
-
         initView(mContextView);
         setListener();
         doBusiness(this);
-
-
     }
 
     /**
@@ -265,13 +263,12 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        //MobclickAgent.onResume(this);
+        StatService.onResume(mContext);
     }
-
     @Override
     public void onPause() {
         super.onPause();
-        //MobclickAgent.onPause(this);
+        StatService.onPause(mContext);
     }
 
 

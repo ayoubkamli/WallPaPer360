@@ -39,14 +39,13 @@ public class HomeAdapter extends BaseAdapter {
     private Context context;
     private List<DailySelect> mData;
     private LayoutInflater layoutInflater;
-    private List<String> collection;
+    private ArrayMap<String,DailySelect> collection;
 
     public HomeAdapter(Context context, List<DailySelect> mData){
         this.context = context;
         this.mData = mData;
-        this.collection = SharedPreferencesUtils.getInstance(context).getDownloadList("collection", String.class);
+        this.collection = SharedPreferencesUtils.getInstance(context).getHashMapData("collection", DailySelect.class);
         layoutInflater = LayoutInflater.from(context);
-
     }
 
     @Override
@@ -89,7 +88,7 @@ public class HomeAdapter extends BaseAdapter {
                 homeHolder.home_item_date.setText("xx年xx月");
             }
             if(collection !=null){
-                if(collection.contains(ds.getImageUrl()+"")){
+                if(collection.containsKey(ds.getImageID()+"")){
                     homeHolder.iv_collection.setImageResource(R.mipmap.collection);
                 }else{
                     homeHolder.iv_collection.setImageResource(R.mipmap.uncollection);
@@ -112,23 +111,23 @@ public class HomeAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     try{
-                        List<String> collection = SharedPreferencesUtils.getInstance(context).getDownloadList("collection", String.class);
+                        ArrayMap<String,DailySelect> collection = SharedPreferencesUtils.getInstance(context).getHashMapData("collection", DailySelect.class);
                         if(collection ==null){
                             homeHolder.iv_collection.setImageResource(R.mipmap.collection);
                             homeHolder.home_item_cNumber.setText((ds.getCollectionNumber()+1)+"");
                             //增加收藏的操作
-                            //collection = new ArrayList<>();
-                            collection.add(ds.getImageUrl()+"");
-                            SharedPreferencesUtils.getInstance(context).setDownloadList("collection",collection,false);
+                            collection = new ArrayMap<>();
+                            collection.put(ds.getImageID()+"",ds);
+                            SharedPreferencesUtils.getInstance(context).putHashMapData("collection",collection);
                             ds.setCollectionNumber(ds.getCollectionNumber()+1);
                             collectionImage(ds,Constant.Collection.COLLECTION_TYPE_ADD);
                         }else{
                             //不为空，判断是否包含此图片ID
-                            if(!collection.contains(ds.getImageUrl()+"")){
+                            if(!collection.containsKey(ds.getImageID()+"")){
                                 homeHolder.iv_collection.setImageResource(R.mipmap.collection);
                                 homeHolder.home_item_cNumber.setText((ds.getCollectionNumber()+1)+"");
-                                collection.add(ds.getImageUrl()+"");
-                                SharedPreferencesUtils.getInstance(context).setDownloadList("collection",collection,false);
+                                collection.put(ds.getImageID()+"",ds);
+                                SharedPreferencesUtils.getInstance(context).putHashMapData("collection",collection);
                                 ds.setCollectionNumber(ds.getCollectionNumber()+1);
                                 collectionImage(ds,Constant.Collection.COLLECTION_TYPE_ADD);
                             }else{
@@ -149,7 +148,7 @@ public class HomeAdapter extends BaseAdapter {
         return view;
     }
 
-    public void refresh(List<DailySelect> listData,List<String> collection) {
+    public void refresh(List<DailySelect> listData,ArrayMap<String,DailySelect> collection) {
         this.collection = collection;
         this.mData.addAll(listData);
         notifyDataSetChanged();
