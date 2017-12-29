@@ -93,10 +93,8 @@ public class DownloadWallpaperFragment extends BaseFragment {
         }
     }
 
-    DailySelect clickSelect = null;
-
     private void setData(List<DailySelect> downloadImage) {
-        clickSelect = downloadImage.get(0);
+        final DailySelect clickSelect = downloadImage.get(0);
         download_type_size.setText(downloadImage.size() + "张");
         Glide.with(mContext)
                 .load(clickSelect.getImageUrl())
@@ -148,55 +146,60 @@ public class DownloadWallpaperFragment extends BaseFragment {
 
     private void setRefreshData(List<DailySelect> downloadImage){
         download_top_name.setText("已下载");
-        if(downloadImage ==null){
+        if(downloadImage !=null&&downloadImage.size()>0){
+            my_wallpaper_null.setVisibility(View.GONE);
+            my_wallpaper_content.setVisibility(View.VISIBLE);
+            final DailySelect clickSelect = downloadImage.get(0);
+            download_type_size.setText(downloadImage.size() + "张");
+            Glide.with(mContext)
+                    .load(clickSelect.getImageUrl())
+                    //设置加载中图片
+                    .placeholder(R.mipmap.lodinging) // can also be a drawable
+                    //加载失败图片
+                    .error(R.mipmap.lodinging)
+                    //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
+                    //.diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .thumbnail(1f) //设置缩略图支持
+                    .fitCenter()
+                    .into(download_top_image);
+
+            final List<DailySelect> mData2 = new ArrayList();
+            for (int i = 0; i < downloadImage.size(); i++) {
+                if (downloadImage.get(i).getImageID() != clickSelect.getImageID()) {
+                    mData2.add(downloadImage.get(i));
+                }
+            }
+
+            if (tdAdapter == null) {
+                tdAdapter = new TypeDetailsAdapter(mContext, mData2);
+            }
+            tdAdapter.cleanRefresh(mData2);
+            download_top_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
+                    intent.putExtra("dailySelect", clickSelect);
+                    intent.putExtra("isCollection",2);
+                    startActivity(intent);
+                }
+            });
+            download_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
+                    DailySelect dailySelect = mData2.get(i);
+                    intent.putExtra("dailySelect", dailySelect);
+                    intent.putExtra("isCollection", 2);
+                    startActivity(intent);
+                }
+            });
+
+        }else {
             my_wallpaper_null.setVisibility(View.VISIBLE);
             my_wallpaper_content.setVisibility(View.GONE);
             my_wallpaper_error.setText("暂无任何下载的壁纸");
-            return;
-        }else {
-            if (downloadImage!=null&&downloadImage.size() > 0) {
-                my_wallpaper_null.setVisibility(View.GONE);
-                my_wallpaper_content.setVisibility(View.VISIBLE);
-                clickSelect = downloadImage.get(0);
-                download_type_size.setText(downloadImage.size() + "张");
-                //download_top_image
-                Glide.with(mContext)
-                        .load(clickSelect.getImageUrl())
-                        //设置加载中图片
-                        .placeholder(R.mipmap.lodinging) // can also be a drawable
-                        //加载失败图片
-                        .error(R.mipmap.lodinging)
-                        //缓存源资源 result：缓存转换后的资源 none:不作任何磁盘缓存 all:缓存源资源和转换后的资源
-                        //.diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .thumbnail(1f) //设置缩略图支持
-                        .fitCenter()
-                        .into(download_top_image);
-                List<DailySelect> ds = new ArrayList();
-                for (int i = 0; i < downloadImage.size(); i++) {
-                    if (downloadImage.get(i).getImageID() != clickSelect.getImageID()) {
-                        ds.add(downloadImage.get(i));
-                    }
-                }
-                if(tdAdapter!=null){
-                    tdAdapter.cleanRefresh(ds);
-                }
-                download_top_image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(mContext, WallPaperDetailsActivity.class);
-                        intent.putExtra("dailySelect", clickSelect);
-                        intent.putExtra("isCollection",2);
-                        startActivity(intent);
-                    }
-                });
-            }else{
-                my_wallpaper_null.setVisibility(View.VISIBLE);
-                my_wallpaper_content.setVisibility(View.GONE);
-                my_wallpaper_error.setText("暂无任何下载的壁纸");
-            }
         }
     }
-
 
     @Override
     public void onDestroy() {
@@ -210,7 +213,9 @@ public class DownloadWallpaperFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             List<DailySelect> downloadImage = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
-            setRefreshData(downloadImage);
+            if(null!=downloadImage&&downloadImage.size()>0){
+                setRefreshData(downloadImage);
+            }
         }
     }
 

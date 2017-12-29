@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.ArrayMap;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -67,7 +68,9 @@ public class SearchFragment extends BaseFragment {
          * 获取热搜词集合
          */
         String url = Constant.HttpConstants.getSearchKeyWord;
-        XutilsHttp.xUtilsPost(url, null, new XutilsHttp.XUilsCallBack() {
+        ArrayMap<String, String> arrayMap = new ArrayMap<>();
+        arrayMap.put(Constant.HttpConstants.searchName,mContext.getResources().getString(R.string.intener_name)+"");
+        XutilsHttp.xUtilsPost(url, arrayMap, new XutilsHttp.XUilsCallBack() {
             @Override
             public void onResponse(String result) {
                 if(result!=null){

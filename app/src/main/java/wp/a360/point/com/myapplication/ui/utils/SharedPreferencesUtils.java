@@ -25,7 +25,6 @@ import wp.a360.point.com.myapplication.ui.entity.Search;
  * SharedPreferences的一个工具类，调用setParam就能保存String, Integer, Boolean, Float, Long类型的参数 
  * 同样调用getParam就能获取到保存在手机里面的数据 
  *
- * 
  */  
 public class SharedPreferencesUtils {
     /**
@@ -53,7 +52,7 @@ public class SharedPreferencesUtils {
     }
 
     /** 
-     * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法 
+     * 保存数据的方法，需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
      * @param key
      * @param object  
      */  

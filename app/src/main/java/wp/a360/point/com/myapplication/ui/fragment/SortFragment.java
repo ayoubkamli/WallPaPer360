@@ -84,8 +84,10 @@ public class SortFragment extends BaseFragment {
         /**
          * 获取服务器数据
          */
-        String url = Constant.HttpConstants.getTypeData;
-        XutilsHttp.xUtilsPost(url, null, new XutilsHttp.XUilsCallBack() {
+        String url = Constant.HttpConstants.getTypeData1;
+        ArrayMap<String, String> arrayMap = new ArrayMap<>();
+        arrayMap.put(Constant.HttpConstants.imageTypeSearchName,mContext.getResources().getString(R.string.intener_name)+"");
+        XutilsHttp.xUtilsPost(url, arrayMap, new XutilsHttp.XUilsCallBack() {
             @Override
             public void onResponse(String result) {
                         if(result!=null){

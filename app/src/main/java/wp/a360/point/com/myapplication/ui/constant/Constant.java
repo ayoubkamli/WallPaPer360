@@ -68,6 +68,8 @@ public class Constant {
         public static final String imageID = "imageID"; //参数 图片ID
         public static final String type = "type"; //参数 1：标识收藏  2：标识取消收藏
         public static final  String appName = "appName";
+        public static final String searchName = "searchName";//搜索关键字参数
+        public static final  String imageTypeSearchName = "imageTypeSearchName";//请求分类关键字
         /**
          * 获取首页数据集合接口
          * */
@@ -75,26 +77,26 @@ public class Constant {
 
         /**
          * 获取分类界面数据集合接口
-         * http://192.168.0.129:8088/WallPaper/ImageType/findAllImageType
+         * http://192.168.0.127:8088/WallPaper/ImageType/findAllImageTypeTwo?imageTypeSearchName=%E4%BA%91%E8%A3%B3%E7%BE%BD%E8%A1%A3
          * 分类二级接口
-         * http://192.168.0.129:8088/WallPaper/image/findImageByimageTypeID
+         *
          * */
-        public static final String getTypeData =  URL_Web+"/ImageType/findAllImageType";
+        public static final String getTypeData =  URL_Web+"/ImageType/findAllImageType";//老接口
+
+        public static final String getTypeData1 =  URL_Web+"/ImageType/findAllImageTypeTwo";//新接口
+
         public static final String getTypeDetails =  URL_Web+"/image/findImageByimageTypeID";
 
         /**
          * 获取搜索界面数据集合接口
          * 关键词集合
-         * http://192.168.0.129:8088/WallPaper/keyword/findRandomKeyWord
          * 搜索结果
-         * http://192.168.0.129:8088/WallPaper/image/findDimImage
          * */
         public static final String getSearchKeyWord =  URL_Web+"/keyword/findRandomKeyWord";
         public static final String getSearchResult =  URL_Web+"/image/findDimImage";
 
         /**
          * 收藏接口
-         * http://192.168.0.129:8088/WallPaper/image/updateImageCollectionNumber
          */
         public static final String collectionImage =  URL_Web+"/image/updateImageCollectionNumber";
 

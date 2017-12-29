@@ -79,17 +79,14 @@ public class ImageTypeDetailsActivity extends BaseActivity implements XRefreshVi
     public int bindLayout() {
         return R.layout.imagetype_details_activity;
     }
-
     @Override
     public void initView(View view) {
         x.view().inject(this);
     }
-
     @Override
     public void setListener() {
         details_top_image.setOnClickListener(this);
     }
-
     @Override
     public void doBusiness(Context mContext) {
         initRefreshView();
@@ -110,7 +107,7 @@ public class ImageTypeDetailsActivity extends BaseActivity implements XRefreshVi
         String url = Constant.HttpConstants.getTypeDetails;
         ArrayMap<String,String> arrayMap = new ArrayMap<>();
         arrayMap.put(Constant.HttpConstants.imageTypeID,imageTypeID+"");
-        arrayMap.put(Constant.HttpConstants.pageNum,mData.size()+"");
+        arrayMap.put(Constant.HttpConstants.pageNum,start+"");
         arrayMap.put(Constant.HttpConstants.pageSize,num+"");
         arrayMap.put(Constant.HttpConstants.pageType,type+"");
         XutilsHttp.xUtilsPost(url, arrayMap, new XutilsHttp.XUilsCallBack() {

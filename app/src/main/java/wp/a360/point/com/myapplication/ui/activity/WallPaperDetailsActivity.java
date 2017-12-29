@@ -13,12 +13,12 @@ import android.util.ArrayMap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.wang.avi.AVLoadingIndicatorView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,6 @@ import wp.a360.point.com.myapplication.ui.utils.FileUtils;
 import wp.a360.point.com.myapplication.ui.utils.NetworkUtils;
 import wp.a360.point.com.myapplication.ui.utils.SharedPreferencesUtils;
 import wp.a360.point.com.myapplication.ui.utils.XutilsHttp;
-import wp.a360.point.com.myapplication.ui.widget.SVProgressHUD;
 /**
  * Created by DN on 2017/12/6.
  */
@@ -166,12 +165,12 @@ public class WallPaperDetailsActivity extends BaseActivity {
                 }
                 break;
             case R.id.details_image:
-                    if ((System.currentTimeMillis() - mkeyTime) > 2000) {
-                        mkeyTime = System.currentTimeMillis();
-                        showToast("再按一次退出预览");
-                    } else {
-                        finish();
-                    }
+                if ((System.currentTimeMillis() - mkeyTime) > 2000) {
+                    mkeyTime = System.currentTimeMillis();
+                    showToast("再按一次退出预览");
+                } else {
+                    finish();
+                }
                 break;
         }
     }
@@ -226,10 +225,10 @@ public class WallPaperDetailsActivity extends BaseActivity {
                 list.add(d);
             }
         }
-        SharedPreferencesUtils.getInstance(mContext).setDownloadList("downloadImage",list,false);
+        SharedPreferencesUtils.getInstance(MyAppLication.context).setDownloadList("downloadImage",list,false);
         //发送广播更新我的下载界面
         Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
+        LocalBroadcastManager.getInstance(MyAppLication.context).sendBroadcast(mIntent);
         finish();
     }
 
@@ -238,10 +237,10 @@ public class WallPaperDetailsActivity extends BaseActivity {
      */
     private void settingWallpaper() {
         if(mWallManager==null){
-            mWallManager =WallpaperManager.getInstance(WallPaperDetailsActivity.this);
+            mWallManager =WallpaperManager.getInstance(MyAppLication.context);
         }
         if(!FileUtils.isIntact(iamgePaht)) {  //说明没有下载，先去下载
-            downloadImg = SharedPreferencesUtils.getInstance(mContext).getDownloadList("downloadImage", DailySelect.class);
+            downloadImg = SharedPreferencesUtils.getInstance(MyAppLication.context).getDownloadList("downloadImage", DailySelect.class);
             if(downloadImg==null){
                 downloadImg = new ArrayList<>();
             }
@@ -255,15 +254,21 @@ public class WallPaperDetailsActivity extends BaseActivity {
             if(!isContains){
                 downloadImg.add(dailySelect);
             }
-            SharedPreferencesUtils.getInstance(mContext).setDownloadList("downloadImage",downloadImg,false);
+            SharedPreferencesUtils.getInstance(MyAppLication.context).setDownloadList("downloadImage",downloadImg,false);
             isWallpaper = true;
             isDownload = true;
-            SVProgressHUD.showWithStatus(mContext, "设置中...");
+            Toast.makeText(MyAppLication.context,"开始下载..",Toast.LENGTH_SHORT).show();
         }else{
             isDownload = false;
-            SVProgressHUD.showWithStatus(mContext, "设置中...");
+            Toast.makeText(MyAppLication.context,"设置中...",Toast.LENGTH_SHORT).show();
         }
-        setWallPaper(mWallManager,iamgePaht,isDownload);
+        try{
+            setWallPaper(mWallManager,iamgePaht,isDownload);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            Toast.makeText(MyAppLication.context,ex.getMessage().toString()+"",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     /**
@@ -280,7 +285,7 @@ public class WallPaperDetailsActivity extends BaseActivity {
                 //判断图片是否完整
                 if(!FileUtils.isIntact(iamgePaht)){
                     //保存至数据库中
-                    SVProgressHUD.showWithStatus(mContext, "下载中...");
+                    Toast.makeText(MyAppLication.context,"开始下载...",Toast.LENGTH_SHORT).show();
                     boolean isContains = false;
                     for(DailySelect dailySelect1:downloadImg){
                         if(dailySelect1.getImageID()==dailySelect.getImageID()){
@@ -296,17 +301,23 @@ public class WallPaperDetailsActivity extends BaseActivity {
                         @Override
                         public void run() {
                             boolean b = FileUtils.downloadImage(DOWNLOAD_IMAGE, iamgePaht);
+                            String message = "";
+                            if(b){
+                                message = "下载成功！";
+                            }else{
+                                message = "下载失败！";
+                            }
                             Message msg = new Message();
                             msg.what=0;
-                            msg.obj = b;
+                            msg.obj = message;
                             mHadnler.sendMessage(msg);
                         }
                     }.start();
                 }else{
-                    showToast("图片已经下载过");
+                    Toast.makeText(MyAppLication.context,"图片已经下载过",Toast.LENGTH_SHORT).show();
                 }
             }else{
-                SVProgressHUD.showWithStatus(mContext, "下载中...");
+                Toast.makeText(MyAppLication.context,"下载中...",Toast.LENGTH_SHORT).show();
                 boolean isContains = false;
                 for(DailySelect dailySelect1:downloadImg){
                     if(dailySelect1.getImageID()==dailySelect.getImageID()){
@@ -322,9 +333,15 @@ public class WallPaperDetailsActivity extends BaseActivity {
                     @Override
                     public void run() {
                         boolean b = FileUtils.downloadImage(DOWNLOAD_IMAGE, iamgePaht);
+                        String message = "";
+                        if(b){
+                            message = "下载成功！";
+                        }else{
+                            message = "下载失败！";
+                        }
                         Message msg = new Message();
                         msg.what=0;
-                        msg.obj = b;
+                        msg.obj = message;
                         mHadnler.sendMessage(msg);
                     }
                 }.start();
@@ -332,7 +349,7 @@ public class WallPaperDetailsActivity extends BaseActivity {
 
             }
         }else{
-            showToast("请检查您的网络是否连接正常");
+            Toast.makeText(MyAppLication.context,"请检查您的网络是否连接正常",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -341,58 +358,56 @@ public class WallPaperDetailsActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case 0:
-                    if(SVProgressHUD.isShowing(mContext)){
-                        SVProgressHUD.dismiss(mContext);
+                case 0://下载壁纸
+                    try{
+                        String message = (String) msg.obj;
+                        showToast(message);
+                        if(isCollection==1){
+                            //广播通知下载界面更新
+                            Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
+                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
+                        }else if(isCollection==2){
+                            //广播通知下载界面更新
+                            Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
+                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
+                        }
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        Toast.makeText(MyAppLication.context,ex.getMessage().toString()+"",Toast.LENGTH_SHORT).show();
                     }
-                    boolean message = (boolean) msg.obj;
-                    if(message){
-                        showToast("下载成功！");
-                    }else{
-                        showToast("下载失败,请稍后再试！");
-                    }
-                    if(isCollection==1){
-                        //广播通知下载界面更新
-                        Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
-                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
-                    }else if(isCollection==2){
-                        //广播通知下载界面更新
-                        Intent mIntent = new Intent(Constant.DOWNLOAD_ACTION);
-                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(mIntent);
-                    }
-                    showLog(message+"");
                     break;
-                case 1:
-                    if(SVProgressHUD.isShowing(mContext)){
-                        SVProgressHUD.dismiss(mContext);
-                    }
-                    boolean message1 = (boolean) msg.obj;
-                    if(message1){
-                        showToast("下载成功！");
-                        Bitmap bitmap = BitmapFactory.decodeFile(iamgePaht);
-                        if(bitmap!=null){
-                            try {
+                case 1:  //设置壁纸（未下载的情况）
+                    try {
+                        boolean message1 = (boolean) msg.obj;
+                        if(message1){
+                            Toast.makeText(MyAppLication.context,"下载成功！",Toast.LENGTH_SHORT).show();
+                            Bitmap bitmap = BitmapFactory.decodeFile(iamgePaht);
+                            if(bitmap!=null){
                                 mWallManager.setBitmap(bitmap);
                                 if(!bitmap.isRecycled()){
                                     bitmap.recycle();
                                     bitmap=null;
                                 }
-                                showToast("设置成功！");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                showToast("设置失败！");
+                                Toast.makeText(MyAppLication.context,"设置成功！",Toast.LENGTH_SHORT).show();
                             }
+                        }else{
+                            Toast.makeText(MyAppLication.context,"下载失败！",Toast.LENGTH_SHORT).show();
                         }
-                    }else{
-                        showToast("下载失败！");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(MyAppLication.context,"设置失败！",Toast.LENGTH_SHORT).show();
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        Toast.makeText(MyAppLication.context,ex.getMessage().toString()+"",Toast.LENGTH_SHORT).show();
                     }
-                     break;
+                    break;
                 case 2:
-                    if(SVProgressHUD.isShowing(mContext)){
-                        SVProgressHUD.dismiss(mContext);
+                    try{
+                        String message2 = (String) msg.obj;
+                        Toast.makeText(MyAppLication.context,message2+"",Toast.LENGTH_SHORT).show();
+                    }catch (Exception ex){
+                        Toast.makeText(MyAppLication.context,ex.getMessage().toString()+"",Toast.LENGTH_SHORT).show();
                     }
-                    String message2 = (String) msg.obj;
-                    showToast(message2);
                     break;
             }
 
@@ -414,11 +429,6 @@ public class WallPaperDetailsActivity extends BaseActivity {
                     public void run() {
                         showLog("收藏结果信息"+result+"");
                         if(result.equals("yes")){
-                            if(collectionType==Constant.Collection.COLLECTION_TYPE_ADD){
-                                //showToast("添加收藏");
-                            }else{
-                                //showToast("取消收藏");
-                            }
                             return;
                         }showToast("收藏失败！");
                     }
@@ -438,46 +448,52 @@ public class WallPaperDetailsActivity extends BaseActivity {
         });
     }
 
-
-
     /**
      * 设置壁纸
      * @param wallPaper
      */
-    public void setWallPaper(WallpaperManager wallPaper,String imagePaht,boolean isDownload) {
+    public void setWallPaper(final WallpaperManager wallPaper, final String imagePaht, boolean isDownload) {
         try{
             if(isDownload){  //没有下载，先去下载
                 new Thread(){
                     @Override
                     public void run() {
-                        boolean b = FileUtils.downloadImage(DOWNLOAD_IMAGE, iamgePaht);
+                        boolean message = FileUtils.downloadImage(DOWNLOAD_IMAGE, iamgePaht);
                         Message msg = new Message();
                         msg.what=1;
-                        msg.obj = b;
+                        msg.obj = message;
                         mHadnler.sendMessage(msg);
                     }
                 }.start();
             }else{
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePaht);
-                if(bitmap!=null){
-                    wallPaper.setBitmap(bitmap);
-                    if(!bitmap.isRecycled()){
-                        bitmap.recycle();
-                        bitmap=null;
+                new Thread(){
+                    @Override
+                    public void run() {
+                        Bitmap bitmap = BitmapFactory.decodeFile(imagePaht);
+                        if(bitmap!=null){
+                            try {
+                                wallPaper.setBitmap(bitmap);
+                                if(!bitmap.isRecycled()){
+                                    bitmap.recycle();
+                                    bitmap=null;
+                                }
+                                Message msg = new Message();
+                                msg.what=2;
+                                msg.obj = "设置壁纸成功！";
+                                mHadnler.sendMessage(msg);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }catch (Exception ex){
+                                ex.printStackTrace();
+                            }
+                        }
                     }
-                    Message msg = new Message();
-                    msg.what = 2;
-                    msg.obj = "设置壁纸成功！";
-                    mHadnler.sendMessage(msg);
-                }
+                }.start();
+
             }
         }catch (Exception e){
             e.printStackTrace();
-            Message msg = new Message();
-            msg.what = 2;
-            msg.obj = e.getMessage().toString()+"";
-            mHadnler.sendMessage(msg);
-
+            Toast.makeText(WallPaperDetailsActivity.this,e.getMessage().toString()+"",Toast.LENGTH_SHORT).show();
         }
     }
 

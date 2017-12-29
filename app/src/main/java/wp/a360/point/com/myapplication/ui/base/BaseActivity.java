@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.baidu.mobstat.StatService;
 
+import wp.a360.point.com.myapplication.ui.activity.MyAppLication;
 import wp.a360.point.com.myapplication.ui.constant.Constant;
 import wp.a360.point.com.myapplication.ui.widget.SystemBarTintManager;
 
@@ -45,7 +46,6 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mContext = this;
         Log.d(TAG, "BaseActivity-->onCreate()");
         Bundle bundle = getIntent().getExtras();
@@ -125,8 +125,7 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
 
     /** View点击 **/
     public abstract void widgetClick(View v);
-    public void toBack(View v)
-    {
+    public void toBack(View v){
         finish();
     }
 
@@ -214,7 +213,7 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
      */
     protected void showToast(String msg){
         if(Constant.isShowToast){
-            Toast.makeText(this,msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),msg, Toast.LENGTH_SHORT).show();
         }
     }
 
