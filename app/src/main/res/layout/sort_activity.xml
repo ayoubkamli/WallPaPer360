@@ -43,7 +43,7 @@
                 </LinearLayout>
 
             </RelativeLayout>
-            <wp.a360.point.com.myapplication.ui.view.MyListView
+            <wp.ys.point.com.ysyy.ui.view.MyListView
                 android:id="@id/sort_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -23,7 +23,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
             android:src="@mipmap/black"/>
-        <wp.a360.point.com.myapplication.ui.view.PagerSlidingTabStrip
+        <wp.ys.point.com.ysyy.ui.view.PagerSlidingTabStrip
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@id/pleasure_tabs"
             android:layout_width="fill_parent"

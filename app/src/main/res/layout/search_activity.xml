@@ -41,7 +41,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <wp.a360.point.com.myapplication.ui.view.FlowLayout
+    <wp.ys.point.com.ysyy.ui.view.FlowLayout
         xmlns:flowlayout="http://schemas.android.com/apk/res-auto"
         android:id="@id/flow_layout"
         flowlayout:vertical_spacing="6dp"

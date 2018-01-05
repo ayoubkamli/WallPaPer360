@@ -50,7 +50,7 @@
                     />
             </RelativeLayout>
         </RelativeLayout>
-        <wp.a360.point.com.myapplication.ui.view.MyGridView
+        <wp.ys.point.com.ysyy.ui.view.MyGridView
             android:id="@id/download_gridview"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"

@@ -29,7 +29,7 @@
             android:scaleType="centerInside"
             android:visibility="gone" />
 
-        <wp.a360.point.com.myapplication.ui.widget.SVCircleProgressBar
+        <wp.ys.point.com.ysyy.ui.widget.SVCircleProgressBar
             android:id="@id/circleProgressBar"
             android:layout_width="@dimen/size_image_smallloading"
             android:layout_height="@dimen/size_image_smallloading"

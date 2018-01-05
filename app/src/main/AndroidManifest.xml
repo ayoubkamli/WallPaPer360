@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wp.point.qj.jb">
+    package="com.y.s.y.y">
 
     <!--联网权限-->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -28,9 +28,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name="wp.a360.point.com.myapplication.ui.activity.MyAppLication"
+        android:name="wp.ys.point.com.ysyy.ui.activity.MyAppLication"
         android:theme="@style/AppTheme">
-        <activity android:name="wp.a360.point.com.myapplication.ui.activity.GuideActivity">
+        <activity android:name="wp.ys.point.com.ysyy.ui.activity.GuideActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,30 +40,30 @@
 
         <meta-data
         android:name="BaiduMobAd_STAT_ID"
-        android:value="ab70c40c5c"/>  
+        android:value="898c68180a"/>  
 
         <meta-data
         android:name="BaiduMobAd_CHANNEL"
-        android:value="huawei" />
+        android:value="baidu" />
 
         <meta-data
         android:name="BaiduMobAd_EXCEPTION_LOG"
         android:value="true" />
 
         <!--主页面-->
-        <activity android:name="wp.a360.point.com.myapplication.ui.activity.MainActivity"
+        <activity android:name="wp.ys.point.com.ysyy.ui.activity.MainActivity"
             android:screenOrientation="portrait" />
         <!--图片预览界面-->
-        <activity android:name="wp.a360.point.com.myapplication.ui.activity.WallPaperDetailsActivity"
+        <activity android:name="wp.ys.point.com.ysyy.ui.activity.WallPaperDetailsActivity"
             android:screenOrientation="portrait" />
         <!--类型结果界面-->
-        <activity android:name="wp.a360.point.com.myapplication.ui.activity.ImageTypeDetailsActivity"
+        <activity android:name="wp.ys.point.com.ysyy.ui.activity.ImageTypeDetailsActivity"
             android:screenOrientation="portrait" />
         <!--搜索结果界面-->
-        <activity android:name="wp.a360.point.com.myapplication.ui.activity.SearchResultActivity"
+        <activity android:name="wp.ys.point.com.ysyy.ui.activity.SearchResultActivity"
             android:screenOrientation="portrait" />
         <!--我的收藏下载界面-->
-        <activity android:name="wp.a360.point.com.myapplication.ui.activity.MyWallpaperActivity"
+        <activity android:name="wp.ys.point.com.ysyy.ui.activity.MyWallpaperActivity"
             android:screenOrientation="portrait" />
 
 
